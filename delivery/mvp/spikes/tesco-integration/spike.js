@@ -12,20 +12,24 @@
  * Network traffic is logged passively for API analysis.
  */
 
-const { chromium } = require('playwright');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
+const { chromium } = require("playwright-extra");
+const stealth = require("puppeteer-extra-plugin-stealth")();
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config();
+
+// Apply stealth plugin to avoid bot detection
+chromium.use(stealth);
 
 // Configuration
 const CONFIG = {
-  headless: false,  // Run in headed mode first to see what's happening
-  slowMo: 100,      // Slow down actions to make them more human-like
-  timeout: 30000,   // 30 second timeout for most operations
-  authFile: path.join(__dirname, 'auth.json'),
-  networkLogFile: path.join(__dirname, 'network-log.json'),
-  screenshotDir: path.join(__dirname, 'screenshots'),
-  searchTerm: 'semi-skimmed milk',  // Default test product
+  headless: false, // Run in headed mode first to see what's happening
+  slowMo: 100, // Slow down actions to make them more human-like
+  timeout: 30000, // 30 second timeout for most operations
+  authFile: path.join(__dirname, "auth.json"),
+  networkLogFile: path.join(__dirname, "network-log.json"),
+  screenshotDir: path.join(__dirname, "screenshots"),
+  searchTerm: "semi-skimmed milk", // Default test product
 };
 
 // Credentials from environment
@@ -35,7 +39,7 @@ const TESCO_PASSWORD = process.env.TESCO_PASSWORD;
 // Network traffic log
 const networkLog = {
   requests: [],
-  responses: []
+  responses: [],
 };
 
 /**
@@ -58,7 +62,7 @@ async function screenshot(page, name) {
  * Setup network logging
  */
 function setupNetworkLogging(page) {
-  page.on('request', request => {
+  page.on("request", (request) => {
     networkLog.requests.push({
       timestamp: new Date().toISOString(),
       url: request.url(),
@@ -68,7 +72,7 @@ function setupNetworkLogging(page) {
     });
   });
 
-  page.on('response', async response => {
+  page.on("response", async (response) => {
     const request = response.request();
     try {
       networkLog.responses.push({
@@ -76,9 +80,9 @@ function setupNetworkLogging(page) {
         url: response.url(),
         status: response.status(),
         headers: response.headers(),
-        contentType: response.headers()['content-type'],
+        contentType: response.headers()["content-type"],
         // Only log response body for JSON responses to avoid huge logs
-        body: response.headers()['content-type']?.includes('application/json')
+        body: response.headers()["content-type"]?.includes("application/json")
           ? await response.text().catch(() => null)
           : null,
       });
@@ -112,7 +116,7 @@ function saveNetworkLog() {
  * Handle cookie consent banner
  */
 async function handleCookieConsent(page) {
-  console.log('  Checking for cookie consent banner...');
+  console.log("  Checking for cookie consent banner...");
 
   try {
     // Wait a bit for the banner to appear
@@ -120,21 +124,23 @@ async function handleCookieConsent(page) {
 
     // Try to find and click "Accept all cookies" button
     // Common selectors for Tesco cookie banner
-    const acceptButton = page.locator('button:has-text("Accept all cookies")').or(
-      page.locator('button:has-text("Accept All Cookies")')
-    ).or(
-      page.locator('#accept-all-cookies')
-    ).first();
+    const acceptButton = page
+      .locator('button:has-text("Accept all cookies")')
+      .or(page.locator('button:has-text("Accept All Cookies")'))
+      .or(page.locator("#accept-all-cookies"))
+      .first();
 
     if (await acceptButton.isVisible({ timeout: 5000 }).catch(() => false)) {
-      console.log('  Cookie banner found, accepting...');
+      console.log("  Cookie banner found, accepting...");
       await acceptButton.click();
       await page.waitForTimeout(1000);
     } else {
-      console.log('  No cookie banner found (may have been dismissed previously)');
+      console.log(
+        "  No cookie banner found (may have been dismissed previously)",
+      );
     }
   } catch (error) {
-    console.log('  Cookie banner handling skipped:', error.message);
+    console.log("  Cookie banner handling skipped:", error.message);
   }
 }
 
@@ -142,66 +148,76 @@ async function handleCookieConsent(page) {
  * Login to Tesco
  */
 async function login(page) {
-  console.log('\n[LOGIN]');
-  console.log('  Navigating to Tesco groceries...');
+  console.log("\n[LOGIN]");
+  console.log("  Navigating to Tesco groceries...");
 
-  await page.goto('https://www.tesco.com/groceries/', { waitUntil: 'domcontentloaded' });
+  await page.goto("https://www.tesco.com/groceries/", {
+    waitUntil: "domcontentloaded",
+  });
   await handleCookieConsent(page);
 
-  console.log('  Looking for sign in button...');
+  console.log("  Looking for sign in button...");
 
   // Click "Sign in" link in header
-  const signInLink = page.locator('a:has-text("Sign in")').or(
-    page.locator('button:has-text("Sign in")')
-  ).first();
+  const signInLink = page
+    .locator('a:has-text("Sign in")')
+    .or(page.locator('button:has-text("Sign in")'))
+    .first();
 
   await signInLink.click();
   await page.waitForTimeout(2000);
 
-  console.log('  Filling in credentials...');
+  console.log("  Filling in credentials...");
 
   // Fill in email
-  const emailField = page.locator('input[type="email"]').or(
-    page.locator('input[name="email"]')
-  ).first();
+  const emailField = page
+    .locator('input[type="email"]')
+    .or(page.locator('input[name="email"]'))
+    .first();
   await emailField.fill(TESCO_EMAIL);
 
   // Fill in password
-  const passwordField = page.locator('input[type="password"]').or(
-    page.locator('input[name="password"]')
-  ).first();
+  const passwordField = page
+    .locator('input[type="password"]')
+    .or(page.locator('input[name="password"]'))
+    .first();
   await passwordField.fill(TESCO_PASSWORD);
 
-  await screenshot(page, 'before-login');
+  await screenshot(page, "before-login");
 
-  console.log('  Submitting login form...');
+  console.log("  Submitting login form...");
 
   // Click login button
-  const loginButton = page.locator('button[type="submit"]').or(
-    page.locator('button:has-text("Sign in")')
-  ).first();
+  const loginButton = page
+    .locator('button[type="submit"]')
+    .or(page.locator('button:has-text("Sign in")'))
+    .first();
   await loginButton.click();
 
   // Wait for navigation after login
-  console.log('  Waiting for login to complete...');
+  console.log("  Waiting for login to complete...");
   await page.waitForTimeout(5000);
 
   // Check if we're logged in by looking for account elements
-  const accountLink = page.locator('text=/account|my account/i').first();
-  const isLoggedIn = await accountLink.isVisible({ timeout: 10000 }).catch(() => false);
+  const accountLink = page.locator("text=/account|my account/i").first();
+  const isLoggedIn = await accountLink
+    .isVisible({ timeout: 10000 })
+    .catch(() => false);
 
   if (!isLoggedIn) {
-    console.log('  WARNING: Login may have failed or requires 2FA/CAPTCHA');
-    console.log('  Please check the browser window and complete any verification steps');
-    await screenshot(page, 'login-verification-needed');
+    console.log("  WARNING: Login may have failed or requires 2FA/CAPTCHA");
+    console.log(
+      "  Please check the browser window and complete any verification steps",
+    );
+    await screenshot(page, "login-verification-needed");
 
     // Wait for user to manually complete verification
-    console.log('  Waiting 60 seconds for manual verification...');
+    console.log("  Waiting 60 seconds for manual verification...");
     await page.waitForTimeout(60000);
   }
 
-  await screenshot(page, 'after-login');
-  console.log('  Login complete!');
+  await screenshot(page, "after-login");
+  console.log("  Login complete!");
 }
 
 /**
@@ -211,35 +227,35 @@ async function searchProduct(page, searchTerm) {
   console.log(`\n[SEARCH] "${searchTerm}"`);
 
   // Find search box
-  const searchBox = page.locator('input[type="search"]').or(
-    page.locator('input[placeholder*="Search"]')
-  ).first();
+  const searchBox = page
+    .locator('input[type="search"]')
+    .or(page.locator('input[placeholder*="Search"]'))
+    .first();
 
-  console.log('  Entering search term...');
+  console.log("  Entering search term...");
   await searchBox.fill(searchTerm);
-  await searchBox.press('Enter');
+  await searchBox.press("Enter");
 
   // Wait for search results to load
-  console.log('  Waiting for search results...');
+  console.log("  Waiting for search results...");
   await page.waitForTimeout(3000);
 
-  await screenshot(page, 'search-results');
+  await screenshot(page, "search-results");
 
   // Try to extract product information
-  console.log('  Analyzing search results...');
+  console.log("  Analyzing search results...");
 
   // Look for product tiles/cards
-  const productCards = page.locator('[data-auto="product-tile"]').or(
-    page.locator('.product-tile')
-  ).or(
-    page.locator('article').filter({ hasText: /£/ })
-  );
+  const productCards = page
+    .locator('[data-auto="product-tile"]')
+    .or(page.locator(".product-tile"))
+    .or(page.locator("article").filter({ hasText: /£/ }));
 
   const count = await productCards.count();
   console.log(`  Found ${count} products`);
 
   if (count === 0) {
-    throw new Error('No products found in search results');
+    throw new Error("No products found in search results");
   }
 
   // Return info about first product
@@ -253,69 +269,68 @@ async function searchProduct(page, searchTerm) {
  * Add product to basket
  */
 async function addToBasket(page, product) {
-  console.log('\n[ADD TO BASKET]');
+  console.log("\n[ADD TO BASKET]");
 
   // Look for "Add" button within the product card
-  const addButton = product.locator('button:has-text("Add")').or(
-    product.locator('[data-auto="add-button"]')
-  ).or(
-    product.locator('button[aria-label*="Add"]')
-  ).first();
+  const addButton = product
+    .locator('button:has-text("Add")')
+    .or(product.locator('[data-auto="add-button"]'))
+    .or(product.locator('button[aria-label*="Add"]'))
+    .first();
 
-  console.log('  Clicking Add button...');
+  console.log("  Clicking Add button...");
   await addButton.click();
 
   // Wait for basket to update
   await page.waitForTimeout(2000);
 
-  await screenshot(page, 'after-add-to-basket');
-  console.log('  Product added!');
+  await screenshot(page, "after-add-to-basket");
+  console.log("  Product added!");
 }
 
 /**
  * Verify item is in basket
  */
 async function verifyBasket(page) {
-  console.log('\n[VERIFY BASKET]');
+  console.log("\n[VERIFY BASKET]");
 
   // Look for basket icon with count
-  const basketCount = page.locator('[data-auto="trolley-count"]').or(
-    page.locator('.trolley-count')
-  ).or(
-    page.locator('[class*="basket"]').filter({ hasText: /\d+/ })
-  ).first();
+  const basketCount = page
+    .locator('[data-auto="trolley-count"]')
+    .or(page.locator(".trolley-count"))
+    .or(page.locator('[class*="basket"]').filter({ hasText: /\d+/ }))
+    .first();
 
-  const count = await basketCount.textContent().catch(() => '0');
+  const count = await basketCount.textContent().catch(() => "0");
   console.log(`  Basket count: ${count}`);
 
   // Navigate to basket page to verify
-  console.log('  Navigating to basket page...');
-  const basketLink = page.locator('a:has-text("Basket")').or(
-    page.locator('a[href*="trolley"]')
-  ).or(
-    page.locator('[data-auto="trolley-link"]')
-  ).first();
+  console.log("  Navigating to basket page...");
+  const basketLink = page
+    .locator('a:has-text("Basket")')
+    .or(page.locator('a[href*="trolley"]'))
+    .or(page.locator('[data-auto="trolley-link"]'))
+    .first();
 
   await basketLink.click();
   await page.waitForTimeout(3000);
 
-  await screenshot(page, 'basket-page');
+  await screenshot(page, "basket-page");
 
   // Check for items in basket
-  const basketItems = page.locator('[data-auto="basket-item"]').or(
-    page.locator('.product-item')
-  ).or(
-    page.locator('article').filter({ hasText: /£/ })
-  );
+  const basketItems = page
+    .locator('[data-auto="basket-item"]')
+    .or(page.locator(".product-item"))
+    .or(page.locator("article").filter({ hasText: /£/ }));
 
   const itemCount = await basketItems.count();
   console.log(`  Items in basket: ${itemCount}`);
 
   if (itemCount === 0) {
-    throw new Error('Basket is empty - add to basket may have failed');
+    throw new Error("Basket is empty - add to basket may have failed");
   }
 
-  console.log('  Basket verification successful!');
+  console.log("  Basket verification successful!");
   return itemCount;
 }
 
@@ -323,15 +338,17 @@ async function verifyBasket(page) {
  * Main spike execution
  */
 async function runSpike() {
-  console.log('='.repeat(60));
-  console.log('TESCO INTEGRATION SPIKE');
-  console.log('='.repeat(60));
+  console.log("=".repeat(60));
+  console.log("TESCO INTEGRATION SPIKE");
+  console.log("=".repeat(60));
 
   // Validate environment
   if (!TESCO_EMAIL || !TESCO_PASSWORD) {
-    console.error('\nERROR: Missing credentials!');
-    console.error('Please create a .env file with TESCO_EMAIL and TESCO_PASSWORD');
-    console.error('See .env.example for the template');
+    console.error("\nERROR: Missing credentials!");
+    console.error(
+      "Please create a .env file with TESCO_EMAIL and TESCO_PASSWORD",
+    );
+    console.error("See .env.example for the template");
     process.exit(1);
   }
 
@@ -340,21 +357,22 @@ async function runSpike() {
 
   try {
     // Launch browser
-    console.log('\n[SETUP]');
+    console.log("\n[SETUP]");
     console.log(`  Launching browser (headless: ${CONFIG.headless})...`);
     browser = await chromium.launch({
+      channel: "chrome", // Use real Chrome instead of bundled Chromium
       headless: CONFIG.headless,
       slowMo: CONFIG.slowMo,
     });
 
     // Create context (with saved auth if available)
     if (hasSavedAuth()) {
-      console.log('  Loading saved authentication state...');
+      console.log("  Loading saved authentication state...");
       context = await browser.newContext({
         storageState: CONFIG.authFile,
       });
     } else {
-      console.log('  No saved authentication found, will login fresh...');
+      console.log("  No saved authentication found, will login fresh...");
       context = await browser.newContext();
     }
 
@@ -366,13 +384,15 @@ async function runSpike() {
       await login(page);
 
       // Save authentication state for next run
-      console.log('  Saving authentication state...');
+      console.log("  Saving authentication state...");
       await context.storageState({ path: CONFIG.authFile });
       console.log(`  Auth saved to: ${CONFIG.authFile}`);
     } else {
-      console.log('\n[LOGIN]');
-      console.log('  Using saved authentication, navigating to Tesco...');
-      await page.goto('https://www.tesco.com/groceries/', { waitUntil: 'domcontentloaded' });
+      console.log("\n[LOGIN]");
+      console.log("  Using saved authentication, navigating to Tesco...");
+      await page.goto("https://www.tesco.com/groceries/", {
+        waitUntil: "domcontentloaded",
+      });
       await handleCookieConsent(page);
     }
 
@@ -386,35 +406,34 @@ async function runSpike() {
     const itemCount = await verifyBasket(page);
 
     // Success!
-    console.log('\n' + '='.repeat(60));
-    console.log('SPIKE SUCCESS!');
-    console.log('='.repeat(60));
+    console.log("\n" + "=".repeat(60));
+    console.log("SPIKE SUCCESS!");
+    console.log("=".repeat(60));
     console.log(`  Product searched: "${CONFIG.searchTerm}"`);
     console.log(`  Products found: ${searchResult.count}`);
     console.log(`  Items in basket: ${itemCount}`);
-    console.log('='.repeat(60));
+    console.log("=".repeat(60));
 
     // Keep browser open for inspection
-    console.log('\nBrowser will remain open for 30 seconds for inspection...');
+    console.log("\nBrowser will remain open for 30 seconds for inspection...");
     await page.waitForTimeout(30000);
-
   } catch (error) {
-    console.error('\n' + '='.repeat(60));
-    console.error('SPIKE FAILED');
-    console.error('='.repeat(60));
+    console.error("\n" + "=".repeat(60));
+    console.error("SPIKE FAILED");
+    console.error("=".repeat(60));
     console.error(error);
-    console.error('='.repeat(60));
+    console.error("=".repeat(60));
 
     if (context) {
       const page = context.pages()[0];
       if (page) {
-        await screenshot(page, 'error-state');
+        await screenshot(page, "error-state");
       }
     }
 
     // Keep browser open on error for debugging
-    console.log('\nBrowser will remain open for 60 seconds for debugging...');
-    await new Promise(resolve => setTimeout(resolve, 60000));
+    console.log("\nBrowser will remain open for 60 seconds for debugging...");
+    await new Promise((resolve) => setTimeout(resolve, 60000));
 
     process.exit(1);
   } finally {
@@ -429,7 +448,7 @@ async function runSpike() {
 }
 
 // Run the spike
-runSpike().catch(error => {
-  console.error('Unhandled error:', error);
+runSpike().catch((error) => {
+  console.error("Unhandled error:", error);
   process.exit(1);
 });

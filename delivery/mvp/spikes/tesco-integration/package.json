@@ -6,11 +6,18 @@
   "scripts": {
     "spike": "node spike.js"
   },
-  "keywords": ["tesco", "automation", "playwright", "spike"],
+  "keywords": [
+    "tesco",
+    "automation",
+    "playwright",
+    "spike"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "playwright": "^1.49.0",
-    "dotenv": "^16.4.7"
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
 }
