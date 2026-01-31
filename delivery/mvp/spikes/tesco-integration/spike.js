@@ -23,13 +23,13 @@ chromium.use(stealth);
 
 // Configuration
 const CONFIG = {
-  headless: false, // Run in headed mode first to see what's happening
+  headless: true, // Run in headed mode first to see what's happening
   slowMo: 100, // Slow down actions to make them more human-like
   timeout: 30000, // 30 second timeout for most operations
   authFile: path.join(__dirname, "auth.json"),
   networkLogFile: path.join(__dirname, "network-log.json"),
   screenshotDir: path.join(__dirname, "screenshots"),
-  searchTerm: "semi-skimmed milk", // Default test product
+  searchTerm: "semi skimmed milk", // Default test product
 };
 
 // Credentials from environment
@@ -176,11 +176,11 @@ async function login(page) {
     .first();
   await emailField.fill(TESCO_EMAIL);
 
+  // press next
+  await page.keyboard.press("Enter");
+
   // Fill in password
-  const passwordField = page
-    .locator('input[type="password"]')
-    .or(page.locator('input[name="password"]'))
-    .first();
+  const passwordField = page.locator('input[id="password"]').first();
   await passwordField.fill(TESCO_PASSWORD);
 
   await screenshot(page, "before-login");
@@ -400,23 +400,23 @@ async function runSpike() {
     const searchResult = await searchProduct(page, CONFIG.searchTerm);
 
     // Add first product to basket
-    await addToBasket(page, searchResult.firstProduct);
+    // await addToBasket(page, searchResult.firstProduct);
 
     // Verify basket
-    const itemCount = await verifyBasket(page);
+    // const itemCount = await verifyBasket(page);
 
-    // Success!
-    console.log("\n" + "=".repeat(60));
-    console.log("SPIKE SUCCESS!");
-    console.log("=".repeat(60));
-    console.log(`  Product searched: "${CONFIG.searchTerm}"`);
-    console.log(`  Products found: ${searchResult.count}`);
-    console.log(`  Items in basket: ${itemCount}`);
-    console.log("=".repeat(60));
+    // // Success!
+    // console.log("\n" + "=".repeat(60));
+    // console.log("SPIKE SUCCESS!");
+    // console.log("=".repeat(60));
+    // console.log(`  Product searched: "${CONFIG.searchTerm}"`);
+    // console.log(`  Products found: ${searchResult.count}`);
+    // console.log(`  Items in basket: ${itemCount}`);
+    // console.log("=".repeat(60));
 
-    // Keep browser open for inspection
-    console.log("\nBrowser will remain open for 30 seconds for inspection...");
-    await page.waitForTimeout(30000);
+    // // Keep browser open for inspection
+    // console.log("\nBrowser will remain open for 30 seconds for inspection...");
+    // await page.waitForTimeout(30000);
   } catch (error) {
     console.error("\n" + "=".repeat(60));
     console.error("SPIKE FAILED");
