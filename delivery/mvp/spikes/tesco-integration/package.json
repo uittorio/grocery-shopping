@@ -1,0 +1,16 @@
+{
+  "name": "tesco-integration-spike",
+  "version": "1.0.0",
+  "description": "Technical spike to prove Tesco basket automation is feasible",
+  "main": "spike.js",
+  "scripts": {
+    "spike": "node spike.js"
+  },
+  "keywords": ["tesco", "automation", "playwright", "spike"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.49.0",
+    "dotenv": "^16.4.7"
+  }
+}
