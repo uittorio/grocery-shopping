@@ -245,11 +245,8 @@ async function searchProduct(page, searchTerm) {
   // Try to extract product information
   console.log("  Analyzing search results...");
 
-  // Look for product tiles/cards
-  const productCards = page
-    .locator('[data-auto="product-tile"]')
-    .or(page.locator(".product-tile"))
-    .or(page.locator("article").filter({ hasText: /£/ }));
+  // Product list items inside ul.list-content
+  const productCards = page.locator("ul.list-content > li");
 
   const count = await productCards.count();
   console.log(`  Found ${count} products`);
@@ -271,12 +268,7 @@ async function searchProduct(page, searchTerm) {
 async function addToBasket(page, product) {
   console.log("\n[ADD TO BASKET]");
 
-  // Look for "Add" button within the product card
-  const addButton = product
-    .locator('button:has-text("Add")')
-    .or(product.locator('[data-auto="add-button"]'))
-    .or(product.locator('button[aria-label*="Add"]'))
-    .first();
+  const addButton = product.locator("button").filter({ hasText: /^add$/i });
 
   console.log("  Clicking Add button...");
   await addButton.click();
@@ -400,7 +392,7 @@ async function runSpike() {
     const searchResult = await searchProduct(page, CONFIG.searchTerm);
 
     // Add first product to basket
-    // await addToBasket(page, searchResult.firstProduct);
+    await addToBasket(page, searchResult.firstProduct);
 
     // Verify basket
     // const itemCount = await verifyBasket(page);
