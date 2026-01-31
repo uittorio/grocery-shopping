@@ -9,13 +9,12 @@ TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
 # Create file with header if it doesn't exist
 if [ ! -f "$LOG_FILE" ]; then
-  echo "# Prompt History" > "$LOG_FILE"
+  echo "# Session History" > "$LOG_FILE"
   echo "" >> "$LOG_FILE"
 fi
 
 {
-  echo "## ${TIMESTAMP}"
-  echo ""
+  echo "**Me** (${TIMESTAMP}):"
   echo "$PROMPT"
   echo ""
   echo "---"
