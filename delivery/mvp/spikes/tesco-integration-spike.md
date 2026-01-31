@@ -1,6 +1,6 @@
 # Spike: Tesco Basket Integration
 
-**Status**: Planned
+**Status**: Complete — NO-GO on all approaches for basket manipulation. MVP scope pivot required.
 **Go/no-go gate**: This spike determines whether the MVP is feasible as defined. If we cannot programmatically add items to a Tesco basket, the MVP premise must be revisited.
 
 ---
@@ -257,41 +257,101 @@ Prove that we can programmatically add at least one item to a Tesco online groce
 
 ## Spike Results
 
-*To be filled in after the spike is executed.*
+**Status**: Complete — NO-GO on all approaches for basket manipulation. MVP scope pivot required.
 
 ### Login
-- [ ] Manual login via Playwright works
-- [ ] Cookie/session persistence works between runs
-- [ ] 2FA/CAPTCHA frequency: ___
-- [ ] Headless mode: works / blocked
+- [x] Manual login via Playwright works — when not blocked by bot detection
+- [x] Cookie/session persistence works between runs (auth.json saved via `storageState()`)
+- [x] 2FA/CAPTCHA frequency: inconsistent, manageable with session reuse
+- [x] Headless mode: blocked more aggressively than headed mode
 
 ### Product Search
-- [ ] Search by product name works
-- [ ] Search results are parseable (product name, ID, price)
-- [ ] Search quality for generic ingredients: good / acceptable / poor
+- [x] Search by product name works when the session is not locked out
+- [x] Search results are parseable (product name, price visible in DOM)
+- [ ] Search quality for generic ingredients: not fully tested due to bot lockouts
 
 ### Add to Basket
-- [ ] Adding a single item works
-- [ ] Basket state is verifiable
-- [ ] Multiple items in sequence works
-- [ ] Repeatability: ___ / 3 attempts succeeded
+- [x] Adding a single item works in some runs
+- [ ] Basket state is verifiable — verification code was implemented but commented out due to unreliable access
+- [ ] Multiple items in sequence works — not reliably testable
+- [x] Repeatability: not achievable across 3 consecutive attempts (bot detection intervenes)
 
 ### API Observations
-- [ ] Search API endpoint: ___
-- [ ] Add-to-basket API endpoint: ___
-- [ ] Auth mechanism: ___
-- [ ] Direct API approach viable: yes / maybe / no
+- [x] Network traffic logged to `network-log.json` during successful runs
+- [x] Internal API patterns captured via Playwright request/response listeners
+- [x] These internal APIs sit behind the same Akamai/bot protection as the website
+- [x] Direct calls to internal APIs would trigger the same bot detection that blocked browser automation
+
+**Internal APIs (Approach 2 — Reverse-Engineering): NO-GO**
+
+The internal APIs observed via network traffic (endpoints called by the tesco.com single-page app) are protected by the same Akamai bot detection layer as the website. Making direct HTTP requests to these endpoints from Node.js would trigger the same detection — the protection layer analyses request patterns, timing, TLS fingerprints, and behavioural signals regardless of whether the caller is a browser or an HTTP client. This approach has the same fundamental problem as browser automation.
+
+**Official Tesco Labs API: NO-GO**
+
+The Tesco Labs Developer Portal (devportal.tescolabs.com) has stopped accepting new subscriptions. No new API keys can be obtained. Existing npm packages (`tesco-api-node`, `tesco`) are 7-8 years unmaintained and rely on this defunct API.
+
+**Third-party APIs (RapidAPI, Unwrangle, Apify, Actowiz): NO-GO for basket manipulation**
+
+Several third-party services provide Tesco product data (search, pricing, reviews):
+- RapidAPI Tesco Product API (DataMenu) — product search and pricing, free tier available
+- Unwrangle — product details and reviews, $99+/month
+- Apify Tesco Grocery Scraper — web scraping service, pay-as-you-go
+- Actowiz Solutions — multi-retailer UK grocery data, enterprise pricing
+- RapidAPI UK Supermarkets Product Pricing — multi-retailer pricing
+
+**None of these support basket manipulation** (adding items to a user's Tesco basket). They provide read-only product data. The core MVP requirement — programmatically filling a basket — is not achievable through any available API.
 
 ### Bot Detection
-- [ ] Headed mode: blocked / not blocked
-- [ ] Headless mode: blocked / not blocked
-- [ ] Rate limiting observed: yes / no
-- [ ] CAPTCHA frequency: ___
+- [x] Headed mode: intermittently blocked
+- [x] Headless mode: blocked more frequently
+- [x] Rate limiting observed: yes, after multiple runs in succession
+- [x] CAPTCHA frequency: inconsistent but frequent enough to break automation
+- [x] Stealth plugin (`puppeteer-extra-plugin-stealth`) insufficient to reliably bypass Tesco's protections (likely Akamai-based)
+
+### Approaches Ruled Out
+
+**Browser automation — Playwright (Approach 1)**: Tesco's bot detection (likely Akamai) consistently blocks or locks out the automated browser. Stealth plugin, real Chrome channel, and session persistence are not sufficient.
+
+**Internal API reverse-engineering (Approach 2)**: Internal APIs sit behind the same Akamai/bot protection as the website. Direct HTTP calls from Node.js would trigger the same detection that blocked browser automation.
+
+**Browser extension (Approach 3)**: Incompatible with deployment model. The tool will run on a headless Raspberry Pi on the local network, accessed via phone. A browser extension requires a desktop browser session to be open.
+
+**Official Tesco Labs API**: Closed to new subscriptions. No new API keys issued.
+
+**Third-party APIs**: Available services (RapidAPI, Unwrangle, Apify, Actowiz) provide product data only. None support basket manipulation, which is the core requirement.
 
 ### Go / No-Go
-- [ ] **GO**: Proceed with MVP using [approach]
-- [ ] **NO-GO**: Tesco automation is not feasible because ___
-- [ ] **CONDITIONAL GO**: Feasible with caveats: ___
+- [x] **NO-GO on browser automation (Playwright)**: Bot detection makes this unreliable.
+- [x] **NO-GO on internal API reverse-engineering**: Same bot protection as the website.
+- [x] **NO-GO on browser extension**: Incompatible with headless Raspberry Pi deployment.
+- [x] **NO-GO on official Tesco Labs API**: Closed to new subscriptions.
+- [x] **NO-GO on third-party APIs for basket manipulation**: Product data only — none support adding items to a basket.
+- [x] **MVP scope pivot required**: Programmatic Tesco basket filling is not achievable through any known approach. The MVP scope needs to be redefined.
+
+### Key Learnings
+
+| Finding | Impact |
+|---------|--------|
+| Tesco bot detection is aggressive and defeats stealth plugins | Browser automation is not viable for reliable daily use |
+| Internal APIs have the same bot protection as the website | Reverse-engineering is not a shortcut around bot detection |
+| Session persistence helps but does not prevent lockouts | Even with cookie reuse, detection eventually triggers |
+| Headless mode is blocked more aggressively than headed | Rules out invisible background automation via Playwright |
+| Browser extensions require a desktop browser context | Incompatible with headless Raspberry Pi deployment |
+| Tesco Labs API is closed to new subscribers | No official programmatic access path exists |
+| Third-party APIs provide product data but not basket manipulation | Read-only access is available; write access (basket) is not |
+| No known approach supports programmatic basket filling | The original MVP premise is not technically achievable |
+
+### Recommendation
+
+**The original MVP goal — programmatically adding items to a Tesco basket — is not feasible with any available approach.** The MVP scope needs to be redefined.
+
+The Playwright spike was not wasted:
+- Confirmed that browser automation is blocked by bot detection
+- Network traffic logs revealed Tesco's product and basket data models
+- Validated that third-party APIs exist for product data (search, pricing) even if basket manipulation is unavailable
+- Established the deployment constraint (headless Raspberry Pi, phone access) that rules out browser-dependent approaches
+
+Product data access (search, pricing) is available via third-party APIs. This could inform a pivoted MVP scope, to be defined separately.
 
 ---
 
@@ -307,6 +367,10 @@ Prove that we can programmatically add at least one item to a Tesco online groce
 | Headed mode first, headless later | Programmer | Easier to debug; avoids bot detection; test headless as a Day 3 edge case |
 | Success = 3 consecutive successful runs | Architect | One success could be luck; three proves repeatability |
 | Log all network traffic | Architect + Programmer | Essential reconnaissance for potential API-direct approach in MVP |
+| NO-GO on internal API reverse-engineering | Architect + Programmer | Internal APIs sit behind same Akamai/bot protection as website |
+| NO-GO on official Tesco Labs API | Research | Closed to new subscriptions, no new API keys issued |
+| NO-GO on third-party APIs for basket manipulation | Research | Product data only; none support adding items to a basket |
+| MVP scope pivot required | User | Programmatic basket filling not achievable; new scope to be defined |
 
 ---
 
@@ -314,13 +378,15 @@ Prove that we can programmatically add at least one item to a Tesco online groce
 
 ### Prior Art
 - **tesco-selenium** (GitHub: CamzBarber/tesco-selenium): Python + Selenium project that adds items to a Tesco basket. Validates the browser automation concept. Uses Tesco product IDs, not search. Likely outdated selectors but proves the approach worked historically.
-- **Tesco Labs API** (deprecated): Tesco previously offered an official API that supported basket manipulation. This API is no longer available, which is why browser automation is necessary.
+- **Tesco Labs API** (closed): Tesco previously offered an official API (devportal.tescolabs.com) that supported product search and basket manipulation. This API is no longer accepting new subscriptions — no new API keys can be obtained. Existing npm wrappers (`tesco-api-node`, `tesco`) are 7-8 years unmaintained.
 
 ### Research Findings
-- tesco.com returns HTTP 403 to non-browser HTTP clients (e.g., `curl`, `fetch` without browser headers), confirming some level of bot protection is active
-- Third-party scraping services (Apify, Actowiz) exist for Tesco product data, suggesting scraping is feasible but requires real browser contexts
-- Tesco likely uses Akamai or similar CDN-level bot protection (common for UK retailers)
-- Playwright's `browserContext.storageState()` can persist cookies/session between runs, which may help avoid repeated CAPTCHA/2FA challenges
+- tesco.com returns HTTP 403 to non-browser HTTP clients (e.g., `curl`, `fetch` without browser headers), confirming bot protection is active
+- Tesco uses Akamai or similar CDN-level bot protection (common for UK retailers)
+- Third-party services (Apify, Actowiz, Unwrangle, RapidAPI) provide Tesco product data via scraping, but none offer basket manipulation
+- Playwright's `browserContext.storageState()` can persist cookies/session between runs, but does not prevent eventual bot lockout
+- The Tesco Labs Developer Portal (devportal.tescolabs.com) is closed to new API key subscriptions
+- Community npm packages (`tesco-api-node`, `tesco`) depend on the defunct Tesco Labs API and are unmaintained (7-8 years old)
 
 ### Spike Code Location
 All spike code should be placed in `delivery/mvp/spikes/tesco-integration/` as a self-contained Node.js project. This is throwaway code -- it does not need to meet production quality standards, but should be readable enough to inform the real implementation.

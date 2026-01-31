@@ -233,8 +233,9 @@ async function searchProduct(page, searchTerm) {
     .first();
 
   console.log("  Entering search term...");
+  await searchBox.focus();
   await searchBox.fill(searchTerm);
-  await searchBox.press("Enter");
+  await page.keyboard.press("Enter");
 
   // Wait for search results to load
   console.log("  Waiting for search results...");
@@ -246,7 +247,7 @@ async function searchProduct(page, searchTerm) {
   console.log("  Analyzing search results...");
 
   // Product list items inside ul.list-content
-  const productCards = page.locator("ul.list-content > li");
+  const productCards = page.locator("ul#list-content > li");
 
   const count = await productCards.count();
   console.log(`  Found ${count} products`);
