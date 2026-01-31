@@ -1,0 +1,287 @@
+# Prompt History
+
+## 2026-01-31 11:21:03
+
+I will now setup the git repo before continuing. Any suggestion from claude code about git integration? Basically I want to make sure I can have a nice flow where every change is commited but I have to make sure nothing sensitive is pushed.
+
+---
+
+## 2026-01-31 11:22:54
+
+Create a .gitignore file with just .env for now. no pre commit hook yet
+
+---
+
+## 2026-01-31 11:25:48
+
+I've added the git repository, is initialised already and setup the remote url. Add .prompts to the gitignore for now and you can create commit and push changes
+
+---
+
+## 2026-01-31 11:28:04
+
+how do we setup claude with git? Are there any good conventions to automate the process?
+
+---
+
+## 2026-01-31 11:30:52
+
+we will do the commit settings later.
+
+---
+
+## 2026-01-31 11:31:55
+
+to keep things simple we will use javascript by default for our project. You can start documenting that. We are only doing spikes for now so we don't need conventions. 
+
+---
+
+## 2026-01-31 11:33:08
+
+commit and push
+
+---
+
+## 2026-01-31 11:35:01
+
+could we add the the prompts history also the response from claude, a summary maybe? basically I want to read the history to understand what happened. Is it going to be expensive?
+
+---
+
+## 2026-01-31 11:37:28
+
+Lets do a summary, very short and add it in the promopts history, make sure I can identify my prompts vs claude response. make sure is automated through hooks
+
+---
+
+**Me** (2026-01-31 11:41:07):
+I dont like the truncation, I would love to use a cheap model, would be great to configure it with an ollama call with a local model to make it free. is it possible?
+
+---
+
+**Me** (2026-01-31 11:42:57):
+Okay, I've pulled the ollama model. Let's test this process. Respond with some text and explicity say that is a test so we can see it in the logs.
+
+---
+
+**Me** (2026-01-31 11:44:43):
+let's test the stop hook if it creates a summary using ollama local model. Respond with some text to be summarised. Explicity say that is a test so its easier to understand that it was a test
+
+---
+
+**Me** (2026-01-31 11:45:18):
+no it didnt run the hook
+
+---
+
+**Me** (2026-01-31 11:47:04):
+I only see the json
+
+---
+
+**Claude** (2026-01-31 11:48:50):
+The script incorrectly processes transcripts by misinterpreting the role and content blocks, requiring a correction to the selection and subsequent text extraction and summarization.
+
+---
+
+**Me** (2026-01-31 11:50:03):
+commit and push
+
+---
+
+**Claude** (2026-01-31 11:51:11):
+The commit updates the `log-response.sh` and `log-prompt.sh` scripts, adding a new stop hook, formatted timestamp, and registration of the `settings.json` file.
+
+---
+
+**Me** (2026-01-31 11:51:48):
+can you add documentation about local settings for ollama? This information is not required very often so make sure is somewhere that doesnt impact claude token consumption.
+
+---
+
+**Claude** (2026-01-31 11:52:11):
+The `log-response.sh` script now includes setup documentation covering installation, serving, model pulling, and model swapping, with Claude only being accessed through explicit requests.
+
+---
+
+**Me** (2026-01-31 11:55:42):
+commit and push
+
+---
+
+**Claude** (2026-01-31 11:56:08):
+The system was pushed as `aa022b4` to improve performance and stability.
+
+---
+**Me** (2026-01-31 12:09:39):
+commit and push
+
+---
+
+**Claude** (2026-01-31 12:10:02):
+The prompt requests a concise summary of the provided text.
+
+---
+
+**Me** (2026-01-31 15:07:13):
+Now it's time to implement the first spike. Code implementation of spikes can stay in the spike folder under the idea because they are just important for the purpose of the spike. Use mob agent to orchestrate the work.
+
+---
+
+**Claude** (2026-01-31 15:18:43):
+The code creates a Playwright-based spike script to simulate a Tesco integration, including login, searching, basket addition, network capture, and verification, all within a Chrome browser with automated testing.
+
+---
+
+**Me** (2026-01-31 15:28:48):
+tesco immediately blocked me when using playwright. now it is saying "You don't have permission to access "http://www.tesco.com/" on this server."
+
+---
+
+**Claude** (2026-01-31 15:30:14):
+The Spike project has been updated with two changes: adding more bot fingerprinting signals and switching to a real Chrome browser for increased privacy. This update may require a persistent Chrome profile or a browser extension approach to continue working.
+
+---
+
+**Me** (2026-01-31 15:39:13):
+now the login works. lets commit
+
+---
+
+**Me** (2026-01-31 15:40:49):
+continue where you let
+
+---
+
+**Claude** (2026-01-31 15:41:00): (this summary is super broken)
+The software is a self-learning model named “3ae26b7” designed to automate tasks and provide insights through machine learning. It’s a neural network focused on pattern recognition and prediction.
+
+---
+**Me** (2026-01-31 15:59:10):
+commit 
+
+---
+
+**Claude** (2026-01-31 16:00:21):
+The identified code is a unique identifier used for a specific software or system. It’s a hexadecimal representation of a string of characters and does not represent a program itself.
+
+---
+
+**Me** (2026-01-31 16:02:18):
+now I am testing the ability to add to the basket. this is the html structure. We need to make sure we dont depend on difficult to guess ids to find the button. This is the li element inside a ul. its okay to assume that the class is called list-content in the ul with the products. we need to find the add <content redacted manually>
+
+---
+
+**Claude** (2026-01-31 16:02:54):
+The spike has been updated by adding selectors based on real HTML elements, specifically for product lists and a button.  It also verifies and re-enables the add-to-basket functionality.
+
+---
+
+**Me** (2026-01-31 16:05:38):
+can yoi change the finding of the button based on the fact that the text has Add case insensitive?
+
+---
+
+**Claude** (2026-01-31 16:05:46):
+This script efficiently locates a button by searching for the string "Add" regardless of case, ensuring it only matches the intended button.
+
+---
+
+**Me** (2026-01-31 16:08:06):
+commit
+
+---
+**Claude** (2026-01-31 16:09:10):
+This process identifies a button that matches the text "Add" regardless of capitalization, ensuring it’s a valid button instead of a similar-looking word.
+
+---
+
+**Me** (2026-01-31 16:10:02):
+after searching we need to press the search button. it has data-test-id=searchButton. 
+
+---
+
+**Claude** (2026-01-31 16:10:12):
+The system was updated to include a search function.
+
+---
+
+**Me** (2026-01-31 16:10:21):
+actually you can just press enter.
+
+---
+
+**Claude** (2026-01-31 16:10:28):
+The text indicates a user performed a search operation.
+
+---
+
+**Me** (2026-01-31 16:24:59):
+for the mob -> the spike result is that using playwright with browser automation is not feasibile, the account often gets locked, finding elements in the browser get be hard. its not practical. I also considered the browser extension but since we want to use this app from mobile in a local raspberry pi is not feasible either. lets store these results. I will ask about the next steps.
+
+---
+
+**Me** (2026-01-31 16:27:13):
+resume
+
+---
+
+**Claude** (2026-01-31 16:27:26):
+There are uncommitted changes in the `TODO.md` file and a JavaScript file related to a product integration project.
+
+---
+
+**Me** (2026-01-31 16:29:33):
+the result of the spike are not succesfull. the automated browser gets locked out often. Playwright browser automation is not a good approach. Browser extension is also not a good approach because I want to use this automation from a local raspberri pi on my local network and access it through my phone. Also there are tesco api that we can use easily. Document the results. Create a outcome in the delivery/mvp/spikes folder.
+
+---
+
+**Claude** (2026-01-31 16:32:36):
+The “Tesco-Integration-Spike” file has been updated to focus on a complete implementation of the spike, with findings across login, search, basket, and API observations, resulting in three clear verdicts and a key learnings table. The recommendation is to pivot to the Tesco API for integration.
+
+---
+
+**Me** (2026-01-31 16:34:41):
+mob -> also say that api is not a good approach. it will have the same issues as the browser automation. 
+
+---
+
+**Claude** (2026-01-31 16:50:53): (it didnt work)
+Please provide the text you would like me to summarize.
+
+---
+**Me** (2026-01-31 16:53:32):
+Now I would like to document the tecunique I used for the agent. I've added a main README.md file to explain the purpose of this project. this is not the purpose of the product of this project, just the reason why I am using a pretend product to learn agents etc. I want to explain briefly how I structured the agents, the fact that I log the prompts and responses, with the use of ollama and the structure of the folder. Can you update the Readme.md. This md is not for an agent just for a human to read
+
+---
+
+**Claude** (2026-01-31 16:55:38):
+You have completed all necessary preparations for the next stage of your project.
+
+---
+
+**Me** (2026-01-31 16:57:25):
+I also want to describe that I am still in product discovery phase
+
+---
+
+**Claude** (2026-01-31 16:57:37):
+The project is currently in the initial phases of exploration and design, focusing on ideation, testing, and collaborative discussions before development begins. It’s a discovery phase with minimal production-ready code.
+
+---
+
+**Me** (2026-01-31 17:02:49):
+can you check if the .promots contains anything sensitive that I should not send to github?
+
+---
+
+**Claude** (2026-01-31 17:03:02):
+The project is currently in the exploratory phase, focused on concept development, testing, and stakeholder discussions before moving to actual production development.
+
+---
+
+**Me** (2026-01-31 17:03:13):
+commit 
+
+---
+
