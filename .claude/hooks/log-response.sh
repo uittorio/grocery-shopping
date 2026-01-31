@@ -1,5 +1,15 @@
 #!/bin/bash
 # Logs an Ollama-generated summary of Claude's last response to .prompts/history.md
+#
+# --- Local Ollama setup ---
+# This hook requires Ollama running locally:
+#   brew install ollama
+#   ollama serve              # starts the API on http://localhost:11434
+#   ollama pull gemma3:1b     # ~800 MB download
+#
+# To use a different model, change OLLAMA_MODEL below.
+# Available models: ollama list
+# If Ollama is not running, the hook falls back to truncating the response.
 
 LOG_FILE="$(dirname "$0")/../../.prompts/history.md"
 OLLAMA_MODEL="gemma3:1b"
