@@ -36,7 +36,7 @@ if [ -z "$RESPONSE_TEXT" ]; then
 fi
 
 # Summarise via local Ollama
-PROMPT="Summarise the following in one short sentence, make sure to include actions taken. Only output the summary, nothing else.\n\n${RESPONSE_TEXT}"
+PROMPT="Summarise the following in a couple of short sentences. Only output the summary, nothing else.\n\n${RESPONSE_TEXT}"
 
 SUMMARY=$(curl -sf "$OLLAMA_URL" \
   -d "$(jq -n --arg model "$OLLAMA_MODEL" --arg prompt "$PROMPT" \
