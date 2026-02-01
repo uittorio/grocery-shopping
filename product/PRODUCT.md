@@ -13,7 +13,6 @@ Families tend to rotate around the same set of recipes, but keeping track of wha
 
 ## Non-goals
 - Not a social recipe-sharing platform
-- Not a meal-planning AI or recommendation engine
 - Not integrated with any grocery retailer
 
 ## How it works (high level)
