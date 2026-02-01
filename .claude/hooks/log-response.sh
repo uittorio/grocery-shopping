@@ -12,8 +12,16 @@
 # If Ollama is not running, the hook falls back to truncating the response.
 
 LOG_FILE="$(dirname "$0")/../../.prompts/history.md"
-OLLAMA_MODEL="gemma3:1b"
+OLLAMA_MODEL="qwen3:8b"
 OLLAMA_URL="http://localhost:11434/api/generate"
+
+SKIP_FLAG="$(dirname "$0")/../../.prompts/.skip-response"
+
+# Skip if the prompt hook flagged this as a commit/push command
+if [ -f "$SKIP_FLAG" ]; then
+  rm -f "$SKIP_FLAG"
+  exit 0
+fi
 
 INPUT=$(cat)
 TRANSCRIPT_PATH=$(echo "$INPUT" | jq -r '.transcript_path // empty')

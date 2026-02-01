@@ -314,3 +314,78 @@ commit and push
 
 ---
 
+**Claude** (2026-02-01 09:38:54):
+The code commit `c9978ab` was successfully merged into the main branch.
+
+---
+
+**Me** (2026-02-01 09:39:32):
+can you find a better model for ollama? what would be the best model to use to summarise?
+
+---
+
+**Claude** (2026-02-01 09:40:23):
+The best model for summarisation considering size constraints is Qwen3 8B or Llama 3.1 8B, which offer a balance of accuracy and speed, with Qwen3 being slightly better for complex tasks.
+
+---
+
+**Me** (2026-02-01 09:45:26):
+I pulled the model
+
+---
+
+**Claude** (2026-02-01 09:45:57):
+Since size isn't a constraint, the question is just which model summarises best. Your current `gemma3:1b` is the smallest option and it shows — the history has several broken summaries.
+
+For summarisation quality without size constraints:
+
+| Model | Size | Why |
+|-------|------|-----|
+| **Qwen3 8B** | ~5 GB | Strong reasoning, good at following instructions precisely |
+| **Llama 3.1 8B** | ~4.7 GB | Solid all-rounder, 128K context |
+| **Mistral 7B** | ~4.1 GB | Fast, reliable for short tasks like summaries |
+| **Gemma3 12B** | ~8 GB | Step up from your current 1B, same family |
+| **Llama 3.1 70B** | ~40 GB | Best quality if your machine has the RAM |
+
+For a one-sentence summary task like yours, **Qwen3 8B** or **Llama 3.1 8B** would be the sweet spot — the summaries will be much more accurate than `gemma3:1b` and they'll still respond fast for a sh
+
+Want me to update the hook to use a different model? You'd just need to pull it first (`ollama pull qwen3:8b` or whichever you pick).
+
+Sources:
+- [Best Ollama Models 2025: Complete Performance Guide](https://collabnix.com/best-ollama-models-in-2025-complete-performance-comparison/)
+- [Ollama Model Library](https://ollama.com/library)
+- [Top Small Language Models for 2026 - DataCamp](https://www.datacamp.com/blog/top-small-language-models)
+- [Best Local LLMs for Offline Use in 2026](https://iproyal.com/blog/best-local-llms/)...
+
+---
+
+**Me** (2026-02-01 09:47:08):
+Now I have another problem. When I ask you to commit and push we have the hook to log the prompt response, but that happens after we commit. how could we add it before commiting? Are there any hooks available or should we programmatically add a commit and push to the hook to commit and push the prompts history?
+
+---
+
+**Claude** (2026-02-01 09:47:38):
+(no content)
+
+---
+
+**Me** (2026-02-01 09:48:58):
+What if we dont include everytime the input and the summary when I do commit and push? also when I just do commit? Also is there a better command available to tell you to commit and push or just commit?
+
+---
+
+**Claude** (2026-02-01 09:50:14):
+The text discusses filtering commit/push actions from logs by updating scripts and using a flag file, and checking Claude Code's /commit skill for better command handling.
+
+---
+
+**Me** (2026-02-01 09:50:46):
+lets set up the commit skill. Honestly I dont care about pushing, I can that myself. or we can create another skill for pushing but again we have to ensure we dont log the prompt push and the response. Do both of thme
+
+---
+
+**Claude** (2026-02-01 09:52:36):
+/commit stages, generates, and commits (no push); /push pushes to remote. Logging filters detect commit/push commands via scripts, set a skip flag to exclude logs, with the flag file gitignored.
+
+---
+
