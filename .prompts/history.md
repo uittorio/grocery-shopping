@@ -389,3 +389,13 @@ lets set up the commit skill. Honestly I dont care about pushing, I can that mys
 
 ---
 
+**Me** (2026-02-01 09:57:20):
+so now we have to revisit our product. We basically agreed that we are not automating filling the basket in the third party grocery shopping. I reccomend changing the existing product.md to automate-basket.md and we are going to rewrite the product.md to something else.. it will be called recipory.md.. is basically recipes and memory. the idea of the product is simple. Help users see existing recipes so they can plan their next shopping. Please take some parts from the existing product.md but remove the automation of filling the basket. 
+
+---
+
+**Claude** (2026-02-01 10:02:48):
+The `product/PRODUCT.md` file was renamed to `product/automate-basket.md` and replaced with a new `product/PRODUCT.md` containing Recipory content. The pivot is complete, preserving the old basket-automation doc while the new file focuses on recipe browsing and planning without retailer integration.
+
+---
+

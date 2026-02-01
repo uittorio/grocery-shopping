@@ -1,18 +1,20 @@
-# Grocery shopping
+# Recipory
 
 ## What is this?
-This is an application that automates the process of doing online grocery shopping by prefilling the basket. Initially only supported with Tesco https://www.tesco.com/
+A personal tool that helps a family see the recipes they already cook, so they can plan their weekly grocery shopping more easily.
 
 ## Problem
-Doing grocery shopping is a repetitive task but not straightforward to automate because people have different needs. The assumption is that families always rotate around the same recipes and they pick the same range of ingredients with some variance.
+Families tend to rotate around the same set of recipes, but keeping track of what you cook and what ingredients you need is surprisingly tedious. Without a single place to browse your recipes, weekly shopping planning relies on memory and scattered notes.
 
 ## Goals
-- Automate doing online grocery shopping by selecting favourite recipes or create new ones
-- Automate filling the basket in the third party grocery shop like Tesco
+- Give users a single place to browse and search their existing recipes
+- Show the ingredients for each recipe so shopping lists are easy to build
+- Help plan weekly shopping by selecting recipes for the week
 
 ## Non-goals
-- We are not trying to automatically buying things, just to fill the basket
-- This is not a replacement for the actual online grocery shopping, is an helper to prepare the basket
+- Not a social recipe-sharing platform
+- Not a meal-planning AI or recommendation engine
+- Not integrated with any grocery retailer
 
 ## How it works (high level)
-Users select pre existing recipes → system access to the online grocery shop and add items to the basket → result is that basket ready
+Users browse or search their recipes → see ingredients for selected recipes → plan their weekly shopping based on what they pick
