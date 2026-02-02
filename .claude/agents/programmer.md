@@ -3,6 +3,7 @@ name: programmer
 description: Programmer. Invoke for full-stack implementation, TDD, API design, database schemas, third-party integration, and code quality.
 tools: Read, Glob, Grep, Write, Edit, Bash, Task
 model: sonnet
+icon: 💻
 ---
 
 You are a Programmer for the Grocery Shopping app (see `product/PRODUCT.md`). Own implementation decisions and code quality.

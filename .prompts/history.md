@@ -399,3 +399,98 @@ The `product/PRODUCT.md` file was renamed to `product/automate-basket.md` and re
 
 ---
 
+**Me** (2026-02-01 10:15:37):
+Now it's time to see what the mob things about Recipory. Let them discuss and find out how we should proceede next. 
+
+---
+
+**Claude** (2026-02-01 10:18:21):
+The MVP focuses on recipe browsing, weekly selection, and shopping list generation, with risks around recipe relevance and competition. Recommended architecture is local-first, requiring curated seed recipes and wireframes before development.
+
+---
+
+**Me** (2026-02-01 10:20:44):
+1. deployment is not important at the moment, we can validate the product without deploying, just locally 2. I can provide a list of recipes but creating them is fundamental because everybody has different ingredients even for the same recipe. 3. Its enough. 4. It solves a real problem because we take note manually at the moment and we dont have a tool that help us doing weekly shopping.
+
+---
+
+**Claude** (2026-02-01 10:21:12):
+The mob's recommendation to defer manual recipe entry is corrected; manual creation is now core as generic seed data fails to capture family-specific ingredients. Updated MVP focuses on user-generated recipes, local storage, and features like recipe browsing, weekly selection, and shopping list generation.
+
+---
+
+**Me** (2026-02-02 19:45:08):
+yes, that sounds good but I want to help them defining the architecture style, programming approach etc.
+
+---
+
+**Claude** (2026-02-02 19:51:56):
+Two plan documents outline structured ingredients (for aggregation) vs. free-text input, with React/Node architecture and four screens. Next steps: review docs or define testing strategy.
+
+---
+
+**Me** (2026-02-02 19:54:37):
+First of all let's move the Architecure.md and design spec to a folder called recipory
+
+---
+
+**Claude** (2026-02-02 19:55:33):
+Both files have been relocated to the specified directories. They are now located at `plan/recipory/ARCHITECTURE.md` and `plan/recipory/DESIGN_SPEC.md`.
+
+---
+
+**Me** (2026-02-02 19:56:08):
+before continuing I would like to improve the claude code experience. Can you send a notification when claude code needs my attention? I am on mac but I want to use this project also on Linux.
+
+---
+
+**Me** (2026-02-02 19:56:22):
+continue where you left
+
+---
+
+**Claude** (2026-02-02 19:59:45):
+A cross-platform script `.claude/hooks/notify.sh` sends desktop notifications via `osascript` (macOS) or `notify-send` (Linux) when Claude Code waits for input. Two hooks in `.claude/settings.json` trigger alerts for idle and permission prompts, with Linux requiring `libnotify` installation.
+
+---
+
+**Me** (2026-02-02 20:08:41):
+ive added some icons to all agents. Will they work? Can you do a quick test. ask all the team members of the mob how are they doing today
+
+---
+
+**Claude** (2026-02-02 20:09:36):
+All six agents are ready and responsive, with each detailing their role and status. Only the user-persona.md file currently has an icon; others lack the `icon` field and need it added for consistency.
+
+---
+
+**Me** (2026-02-02 20:09:45):
+I've added some icons now. Can you test again?
+
+---
+
+**Claude** (2026-02-02 20:10:29):
+All six agents are active and ready, with roles ranging from Designer to Mob Facilitator. The `icon` frontmatter field is accepted but doesn't affect functionality, though `designer.md` lacks the closing `---` in its frontmatter.
+
+---
+
+**Me** (2026-02-02 20:11:08):
+is there a way to have an icon on agents so It will be visibile who is doing what?
+
+---
+
+**Claude** (2026-02-02 20:11:43):
+All six agents are active and ready, with clear statuses and roles. The `icon` frontmatter is accepted but may not render visually, and `designer.md` lacks the closing `---` in its frontmatter.
+
+---
+
+**Me** (2026-02-02 20:15:24):
+Lets move the plan files into a discovery recipory folder. Ask then the team through the mob to formulate a plan for the design spec provided by the designer. The goal of the plan is to build something fast (not bad), small features to see the product working. After we defined the plan I will revise it and help the team move forward.
+
+---
+
+**Claude** (2026-02-02 20:19:18):
+The `plan/recipory/*` files were moved to `discovery/recipory/`, with a delivery plan outlining 5 incremental steps for building a recipe app. The plan includes parallel development for increments 4 and 5, deferring search and ingredient aggregation.
+
+---
+
