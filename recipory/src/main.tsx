@@ -11,12 +11,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { App } from './adapters/ui/App';
-import { InMemoryRecipeRepository } from './adapters/storage/inMemoryRecipeRepository';
-import { createListRecipes } from './application/listRecipes';
+import type { Recipe } from './domain/recipe.js';
+import { App } from './adapters/ui/App.js';
+import { InMemoryRecipeRepository } from './adapters/storage/inMemoryRecipeRepository.js';
+import { createListRecipes } from './application/listRecipes.js';
 
 // Initialize storage adapter with hardcoded data for walking skeleton
-const hardcodedRecipe = {
+const hardcodedRecipe: Recipe = {
   id: '550e8400-e29b-41d4-a716-446655440000',
   name: 'Spaghetti Carbonara',
   ingredients: [
@@ -34,7 +35,12 @@ const recipeRepository = new InMemoryRecipeRepository([hardcodedRecipe]);
 const listRecipes = createListRecipes(recipeRepository);
 
 // Render app
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <App listRecipes={listRecipes} />
   </React.StrictMode>

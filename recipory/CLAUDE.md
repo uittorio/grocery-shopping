@@ -15,7 +15,7 @@ npm run build      # Production build
 
 - **UI**: React 19, Vite 7
 - **Testing**: Vitest, @testing-library/react, jsdom
-- **Language**: JavaScript (ES modules)
+- **Language**: TypeScript (ES modules)
 
 ## Architecture: Hexagonal
 
@@ -24,21 +24,21 @@ The codebase follows hexagonal (ports & adapters) architecture. The domain has z
 ```
 src/
 ├── domain/           # Pure business logic, no imports from outside domain
-│   ├── recipe.js     # Entity factory: createRecipe() validates and returns a plain object
-│   └── ports/        # Interfaces (abstract classes) that adapters must implement
-│       └── recipeRepository.js
+│   ├── recipe.ts     # Entity factory: createRecipe() validates and returns a plain object
+│   └── ports/        # Interfaces that adapters must implement
+│       └── recipeRepository.ts
 │
 ├── application/      # Use cases: orchestrate domain through ports
-│   └── listRecipes.js  # Factory: createListRecipes(repo) -> async function
+│   └── listRecipes.ts  # Factory: createListRecipes(repo) -> async function
 │
 ├── adapters/         # Implementations of ports + UI
-│   ├── storage/      # Persistence adapters (implement port classes)
-│   │   └── inMemoryRecipeRepository.js
+│   ├── storage/      # Persistence adapters (implement port interfaces)
+│   │   └── inMemoryRecipeRepository.ts
 │   └── ui/           # React components
-│       ├── App.jsx
+│       ├── App.tsx
 │       └── components/
 │
-└── main.jsx          # Composition root: wires adapters -> use cases -> UI
+└── main.tsx          # Composition root: wires adapters -> use cases -> UI
 ```
 
 ### Rules
@@ -46,14 +46,14 @@ src/
 - **Domain** depends on nothing. No imports from `adapters/`, `application/`, or libraries.
 - **Application** depends on domain only. Receives adapters via dependency injection.
 - **Adapters** depend on domain ports. They implement the interfaces defined in `domain/ports/`.
-- **main.jsx** is the composition root — the only place that knows about all layers.
+- **main.tsx** is the composition root — the only place that knows about all layers.
 
 ### Patterns
 
-- **Entities are factory functions**: `createRecipe(data)` validates and returns a plain object. No classes.
-- **Ports are abstract classes**: e.g. `RecipeRepository` with methods that throw "not implemented".
-- **Adapters extend ports**: e.g. `InMemoryRecipeRepository extends RecipeRepository`.
-- **Use cases are factory functions**: `createListRecipes(repo)` returns an async function.
+- **Entities are factory functions**: `createRecipe(data)` validates and returns a typed plain object. No classes.
+- **Ports are TypeScript interfaces**: e.g. `interface RecipeRepository` defines the contract.
+- **Adapters implement ports**: e.g. `InMemoryRecipeRepository implements RecipeRepository`.
+- **Use cases are factory functions**: `createListRecipes(repo)` returns a typed async function.
 - **UI receives use cases as props**: components never import adapters or domain directly.
 
 ## Testing
@@ -73,7 +73,7 @@ src/
 
 ### Conventions
 
-- Mirror `src/` structure under `tests/`: `src/domain/recipe.js` -> `tests/domain/recipe.test.js`
+- Mirror `src/` structure under `tests/`: `src/domain/recipe.ts` -> `tests/domain/recipe.test.ts`
 - Use `describe` for the unit, nested `describe` for the method/behaviour, `it` for each case.
 - Import from vitest explicitly: `import { describe, it, expect } from 'vitest'`
 - No `beforeEach` for simple data setup — inline it in each test for readability.

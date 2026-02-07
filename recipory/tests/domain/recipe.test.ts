@@ -27,7 +27,7 @@ describe('Recipe Entity', () => {
       expect(recipe.id).toBe('123');
       expect(recipe.name).toBe('Spaghetti Carbonara');
       expect(recipe.ingredients).toHaveLength(2);
-      expect(recipe.ingredients[0].name).toBe('spaghetti');
+      expect(recipe.ingredients[0]?.name).toBe('spaghetti');
     });
 
     it('trims whitespace from recipe name', () => {
@@ -99,8 +99,8 @@ describe('Recipe Entity', () => {
         updatedAt: '2026-02-02T10:00:00Z',
       });
 
-      expect(recipe.ingredients[0].quantity).toBeNull();
-      expect(recipe.ingredients[0].unit).toBeNull();
+      expect(recipe.ingredients[0]?.quantity).toBeNull();
+      expect(recipe.ingredients[0]?.unit).toBeNull();
     });
   });
 

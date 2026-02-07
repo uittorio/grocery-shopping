@@ -6,7 +6,13 @@
  * Will be enhanced in Increment 3 with full CRUD interactions.
  */
 
-export function RecipeList({ recipes }) {
+import type { Recipe } from '../../../domain/recipe.js';
+
+type RecipeListProps = {
+  recipes: Recipe[];
+};
+
+export function RecipeList({ recipes }: RecipeListProps) {
   if (!recipes || recipes.length === 0) {
     return (
       <div className="empty-state">

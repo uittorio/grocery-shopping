@@ -14,10 +14,6 @@ See `product/PRODUCT.md` for the full product description.
 - `delivery/` — Delivery artifacts, release checklists, technical spikes
   - `delivery/<idea>/spikes/` — Technical spikes and feasibility experiments
 
-## Tech Stack
-
-- JavaScript by default
-
 ## Conventions
 
 - No time estimates in any documents. Focus on what needs doing, not how long it takes.

@@ -608,3 +608,13 @@ Updating the README to improve clarity and user-friendliness, and creating a CLA
 
 ---
 
+**Me** (2026-02-07 16:44:51):
+Change the stack to be in typescript. Update the docs and the code. The mob should handle this.
+
+---
+
+**Claude** (2026-02-07 16:54:20):
+Update the root `CLAUDE.md` file to correct the mention of "JavaScript by default".
+
+---
+

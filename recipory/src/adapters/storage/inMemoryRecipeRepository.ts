@@ -5,11 +5,13 @@
  * Used for walking skeleton and testing. Will be replaced by JSON file adapter in Increment 2.
  */
 
-import { RecipeRepository } from '../../domain/ports/recipeRepository.js';
+import type { Recipe } from '../../domain/recipe.js';
+import type { RecipeRepository } from '../../domain/ports/recipeRepository.js';
 
-export class InMemoryRecipeRepository extends RecipeRepository {
-  constructor(initialData = []) {
-    super();
+export class InMemoryRecipeRepository implements RecipeRepository {
+  private recipes: Map<string, Recipe>;
+
+  constructor(initialData: Recipe[] = []) {
     // Store recipes in a Map for O(1) lookup by ID
     this.recipes = new Map();
     initialData.forEach(recipe => {
@@ -17,20 +19,20 @@ export class InMemoryRecipeRepository extends RecipeRepository {
     });
   }
 
-  async save(recipe) {
+  async save(recipe: Recipe): Promise<Recipe> {
     this.recipes.set(recipe.id, recipe);
     return recipe;
   }
 
-  async findById(id) {
-    return this.recipes.get(id) || null;
+  async findById(id: string): Promise<Recipe | null> {
+    return this.recipes.get(id) ?? null;
   }
 
-  async findAll() {
+  async findAll(): Promise<Recipe[]> {
     return Array.from(this.recipes.values());
   }
 
-  async search(query) {
+  async search(query: string): Promise<Recipe[]> {
     const lowerQuery = query.toLowerCase();
     return Array.from(this.recipes.values()).filter(recipe => {
       // Search in recipe name
@@ -44,7 +46,7 @@ export class InMemoryRecipeRepository extends RecipeRepository {
     });
   }
 
-  async delete(id) {
+  async delete(id: string): Promise<void> {
     this.recipes.delete(id);
   }
 }

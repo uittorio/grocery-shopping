@@ -7,11 +7,17 @@
  */
 
 import { useState, useEffect } from 'react';
-import { RecipeList } from './components/RecipeList';
+import type { Recipe } from '../../domain/recipe.js';
+import type { ListRecipes } from '../../application/listRecipes.js';
+import { RecipeList } from './components/RecipeList.js';
 import './App.css';
 
-export function App({ listRecipes }) {
-  const [recipes, setRecipes] = useState([]);
+type AppProps = {
+  listRecipes: ListRecipes;
+};
+
+export function App({ listRecipes }: AppProps) {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
