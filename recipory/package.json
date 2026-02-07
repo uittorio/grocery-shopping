@@ -1,0 +1,37 @@
+{
+  "name": "grocery-shopping",
+  "version": "1.0.0",
+  "description": "## Purpose of the project This is not a real product. I am using a pretend grocery shopping app as a vehicle to explore how LLM agents work in Claude Code. The goal is to understand if agents can collaborate the way a real software team would -- following something close to software teaming, where specialists contribute their expertise and reach decisions together. This should give a better output and improve the overall quality of the product, a better developer experience and less hallucination.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uittorio/grocery-shopping.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uittorio/grocery-shopping/issues"
+  },
+  "homepage": "https://github.com/uittorio/grocery-shopping#readme",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@vitejs/plugin-react": "^5.1.3",
+    "jsdom": "^28.0.0",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}

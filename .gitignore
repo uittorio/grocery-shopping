@@ -1,2 +1,4 @@
 .env
 .prompts/.skip-response
+node_modules/
+dist/
