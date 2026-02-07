@@ -1,34 +1,16 @@
-import { useState, useEffect } from 'react';
-import type { Recipe } from '../../domain/recipe.js';
-import type { ListRecipes } from '../../application/listRecipes.js';
+import { useRecipes } from './hooks/useRecipes.js';
 import { RecipeList } from './components/RecipeList.js';
 import './App.css';
 
-type AppProps = {
-  listRecipes: ListRecipes;
-};
+export function App() {
+  const { data: recipes, isLoading, error } = useRecipes();
 
-export function App({ listRecipes }: AppProps) {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadRecipes() {
-      try {
-        const data = await listRecipes();
-        setRecipes(data);
-      } catch (error) {
-        console.error('Failed to load recipes:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadRecipes();
-  }, [listRecipes]);
-
-  if (loading) {
+  if (isLoading) {
     return <div>Loading recipes...</div>;
+  }
+
+  if (error) {
+    return <div>Failed to load recipes</div>;
   }
 
   return (
@@ -37,7 +19,7 @@ export function App({ listRecipes }: AppProps) {
         <h1>Recipory</h1>
       </header>
       <main>
-        <RecipeList recipes={recipes} />
+        <RecipeList recipes={recipes ?? []} />
       </main>
     </div>
   );

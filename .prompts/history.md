@@ -628,3 +628,13 @@ All 9 tests passed. Comments were removed from 8 files, and a "no unnecessary co
 
 ---
 
+**Me** (2026-02-07 17:03:39):
+for the testing approach I want to write down the testing strategy. The intent of the test is to verify behaviour. Ideally, the most valuable test is the one closer to the user. (real frontend, real backend, real browser in this instance). We know that using a real browser is expensive and slow but we need to aim for the closest with a good balance of fast and valuable. For the frontend I want to use msw but first lets define the principle. In the frontend we want to test that when I render the application and I have recipes I can see the recipes on the page. Ask the mob to talk about this and come up with a plan to include the docs for testing strategy. You can ask me questions if something is not clear. Overall I am expecting, update the docs for testing strategy, introduce new framework msw and change the architecture where we have async requests coming from network requests (feel free to use the latest tanstack for http requests). 
+
+---
+
+**Claude** (2026-02-07 17:11:10):
+New files and updates implemented recipe data handling, MSW testing setup, and UI hooks with TanStack Query, passing all 10 tests. The UI test verifies recipe display via MSW-intercepted fetches, confirming "Spaghetti Carbonara" and "3 ingredients" render correctly.
+
+---
+
