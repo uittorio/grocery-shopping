@@ -1,11 +1,3 @@
-/**
- * App Component - Main application shell
- *
- * Architectural note: Entry point for the UI adapter.
- * Wires together use cases and components.
- * State management and dependency injection happen here.
- */
-
 import { useState, useEffect } from 'react';
 import type { Recipe } from '../../domain/recipe.js';
 import type { ListRecipes } from '../../application/listRecipes.js';
@@ -21,7 +13,6 @@ export function App({ listRecipes }: AppProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load recipes on mount
     async function loadRecipes() {
       try {
         const data = await listRecipes();

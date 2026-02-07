@@ -1,10 +1,3 @@
-/**
- * Domain Tests - Recipe Entity
- *
- * Architectural note: Domain tests are pure unit tests with no mocks.
- * They validate business rules and entity behavior.
- */
-
 import { describe, it, expect } from 'vitest';
 import { createRecipe, generateRecipeId } from '../../src/domain/recipe.js';
 

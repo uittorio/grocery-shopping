@@ -618,3 +618,13 @@ Update the root `CLAUDE.md` file to correct the mention of "JavaScript by defaul
 
 ---
 
+**Me** (2026-02-07 16:56:42):
+cool, now I've notived that there are a lot of comments in the code. Comments in code are not necessary unless there is a very difficult algorithm or scenario that is not easy to understand for a software engineer by reading the code.
+
+---
+
+**Claude** (2026-02-07 16:58:28):
+All 9 tests passed. Comments were removed from 8 files, and a "no unnecessary comments" rule was added to `recipory/CLAUDE.md` for future compliance.
+
+---
+

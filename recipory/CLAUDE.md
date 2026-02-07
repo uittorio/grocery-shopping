@@ -56,6 +56,11 @@ src/
 - **Use cases are factory functions**: `createListRecipes(repo)` returns a typed async function.
 - **UI receives use cases as props**: components never import adapters or domain directly.
 
+## Code Style
+
+- **No unnecessary comments.** The code should be self-explanatory. Only add comments for genuinely complex algorithms or non-obvious business decisions.
+- No JSDoc on functions — TypeScript types serve as documentation.
+
 ## Testing
 
 ### Approach

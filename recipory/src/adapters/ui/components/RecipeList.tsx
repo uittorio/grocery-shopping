@@ -1,11 +1,3 @@
-/**
- * RecipeList Component
- *
- * Architectural note: UI adapter that consumes application use cases.
- * For walking skeleton, displays hardcoded recipe data.
- * Will be enhanced in Increment 3 with full CRUD interactions.
- */
-
 import type { Recipe } from '../../../domain/recipe.js';
 
 type RecipeListProps = {
