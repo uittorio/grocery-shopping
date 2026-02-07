@@ -9,6 +9,11 @@ INPUT=$(cat)
 PROMPT=$(echo "$INPUT" | jq -r '.prompt')
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
+# Skip system-generated notifications (e.g. background task killed)
+if echo "$PROMPT" | grep -q '<task-notification>'; then
+  exit 0
+fi
+
 # Skip commit/push commands
 NORMALISED=$(echo "$PROMPT" | tr '[:upper:]' '[:lower:]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 case "$NORMALISED" in

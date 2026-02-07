@@ -514,14 +514,27 @@ The Walking Skeleton is complete with all acceptance criteria met, including 9/9
 
 ---
 
-**Me** (2026-02-07 15:02:06):
-<task-notification>
-<task-id>ba89eef</task-id>
-<output-file>/private/tmp/claude-502/-Users-vittorio-guerriero-ivcevidensia-com-w-repos-grocery-shopping/tasks/ba89eef.output</output-file>
-<status>killed</status>
-<summary>Background command "Start the dev server to verify the app works" was killed</summary>
-</task-notification>
-Read the output file to retrieve the result: /private/tmp/claude-502/-Users-vittorio-guerriero-ivcevidensia-com-w-repos-grocery-shopping/tasks/ba89eef.output
+**Me** (2026-02-07 15:05:54):
+it seems like the prompt history contains some weird tags. Can you check what went wrong
+
+---
+
+**Claude** (2026-02-07 15:06:24):
+The system `<task-notification>` from a killed background task was incorrectly logged as a user prompt due to the logging hook capturing raw XML instead of filtering it. The root cause involves reviewing the logging hook's handling of notifications.
+
+---
+**Me** (2026-02-07 15:07:40):
+yes
+
+---
+
+**Claude** (2026-02-07 15:08:32):
+The content was partially redacted, but the bad entry remains. Both fixes are being applied to address the issue.
+
+---
+
+**Me** (2026-02-07 15:09:06):
+nice, is this a bug in claude code? Why the notification was part of the UserPromptSubmit hook?
 
 ---
 
