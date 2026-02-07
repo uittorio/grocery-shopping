@@ -31,4 +31,4 @@ See `product/PRODUCT.md` for the full product description.
 ## Agents
 
 Team agents live in `.claude/agents/`. See each file for role and scope:
-- Designer, Product Owner, Architect, Programmer, User Persona, Mob Facilitator
+- Designer, Product Owner, Architect, Software Engineer, User Persona, Mob Facilitator

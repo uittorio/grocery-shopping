@@ -1,8 +1,8 @@
 ### This is not for the agent
 
-product ideas: quickly seee ingredients, add new ones, weekly plans, random selection, balanced diet, add new random ones
-
-
-technical side:
-define programming skills, languages, patterns
-evolve them as they go. first principle is tdd.
+- testing is not useful, we need to define a strategy. react testing library
+- define folder structure for frontend
+- add a step that checks for security risks in the code about to be commited.
+- use team agents
+- rename programmer to software engineer
+- redefine readme.recipory.md in order to be used by the software engineers

@@ -15,23 +15,23 @@ Read each agent's prompt from `.claude/agents/` before spawning via Task tool (`
 - **Designer** (`designer.md`) -- UX, UI, visual design
 - **Product Owner** (`product-owner.md`) -- Requirements, priorities
 - **Architect** (`architect.md`) -- Architecture, system design
-- **Programmer** (`programmer.md`) -- Implementation, testing
+- **Software Engineer** (`software-engineer.md`) -- Implementation, testing
 - **User Persona** (`user-persona.md`) -- User perspective
 
 ## Patterns
 
-**Sequential** (outputs depend on prior): `Product Owner -> Designer -> Programmer -> Synthesis`
-**Parallel** (independent work, use parallel Task calls): `[Designer + Programmer + User Persona] -> Synthesis`
-**Iterative** (refine together): `Architect proposes -> Programmer reviews -> refine -> done`
+**Sequential** (outputs depend on prior): `Product Owner -> Designer -> Software Engineer -> Synthesis`
+**Parallel** (independent work, use parallel Task calls): `[Designer + Software Engineer + User Persona] -> Synthesis`
+**Iterative** (refine together): `Architect proposes -> Software Engineer reviews -> refine -> done`
 
 ## Decision Routing
 
 | Decision | Primary | Collaborators |
 |----------|---------|---------------|
 | Product features | Product Owner | Designer, Architect, User Persona |
-| User experience | Designer | Product Owner, Programmer, User Persona |
-| System design | Architect | Programmer |
-| Implementation | Programmer | Architect |
+| User experience | Designer | Product Owner, Software Engineer, User Persona |
+| System design | Architect | Software Engineer |
+| Implementation | Software Engineer | Architect |
 | User validation | User Persona | Product Owner, Designer |
 
 ## Workflow
