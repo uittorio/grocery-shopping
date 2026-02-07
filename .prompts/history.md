@@ -593,3 +593,18 @@ I will rename the file and update all references simultaneously.
 
 ---
 
+**Me** (2026-02-07 16:39:41):
+So now, I am doing something that I havent done before. I want to start defining the rules for the repository that are only useful to the software engineer and architect. I dont want to pollute the main README.recipory.md much (also it can be rename to README.md. We need to start defining the rules and I want a nice way to define them. A way that is useful, economic for the agent. I will probably define how to run the app, how to run the tests, which framework are we using, the patter conventions (hexagonal with examples), the testing approach (from which level we test and what we test). Give an opinion first on how to proceede.
+
+---
+
+**Me** (2026-02-07 16:41:08):
+yes, set it up
+
+---
+
+**Claude** (2026-02-07 16:42:10):
+Updating the README to improve clarity and user-friendliness, and creating a CLAUDE.md file for agent documentation.
+
+---
+
