@@ -27,7 +27,9 @@ src/
 ├── domain/           # Pure business logic, no imports from outside domain
 │   ├── recipe.ts     # Entity factory: createRecipe() validates and returns a plain object
 │   └── ports/        # Interfaces that adapters must implement
-│       └── recipeRepository.ts
+│       ├── recipeReader.ts    # Read-only operations
+│       ├── recipeWriter.ts    # Write operations
+│       └── recipeRepository.ts  # Combines reader + writer
 │
 ├── application/      # Use cases: orchestrate domain through ports
 │   └── listRecipes.ts  # Factory: createListRecipes(repo) -> async function
@@ -36,6 +38,7 @@ src/
 │   ├── storage/      # Persistence adapters (implement port interfaces)
 │   │   └── inMemoryRecipeRepository.ts
 │   ├── http/         # HTTP adapters for external APIs
+│   │   ├── httpRecipeReader.ts  # Implements RecipeReader
 │   │   └── recipesApi.ts
 │   └── ui/           # React components
 │       ├── App.tsx
@@ -62,7 +65,8 @@ src/
 
 - **Entities are factory functions**: `createRecipe(data)` validates and returns a typed plain object. No classes.
 - **Ports are TypeScript interfaces**: e.g. `interface RecipeRepository` defines the contract.
-- **Adapters implement ports**: e.g. `InMemoryRecipeRepository implements RecipeRepository`.
+  - **Interface segregation**: Read-only operations live in `RecipeReader`, write operations in `RecipeWriter`. The full `RecipeRepository` extends both.
+- **Adapters implement ports**: e.g. `InMemoryRecipeRepository implements RecipeRepository`, `HttpRecipeReader implements RecipeReader`.
 - **Use cases are factory functions**: `createListRecipes(repo)` returns a typed async function.
 - **UI uses TanStack Query hooks**: components fetch data via `useRecipes()` hook, not via props.
 
@@ -99,12 +103,12 @@ Test the system **from the user's perspective**, as close to production behaviou
 
 | Level | Location | What to test | Mocks allowed |
 |-------|----------|-------------|---------------|
-| Domain unit | `tests/domain/` | Entity validation, business rules | None — pure functions |
 | UI integration | `tests/adapters/ui/` | Full user flows: render app, see data on page | HTTP only (via MSW) |
+| Domain unit (fallback) | `tests/domain/` | Only when behaviour can't be tested at integration level | None — pure functions |
 
 ### Conventions
 
-- Mirror `src/` structure under `tests/`: `src/domain/recipe.ts` -> `tests/domain/recipe.test.ts`
+- Mirror `src/` structure under `tests/`
 - Use `describe` for the unit, nested `describe` for the method/behaviour, `it` for each case.
 - Import from vitest explicitly: `import { describe, it, expect } from 'vitest'`
 - No `beforeEach` for simple data setup — inline it in each test for readability.

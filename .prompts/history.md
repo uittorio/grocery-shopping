@@ -638,3 +638,83 @@ New files and updates implemented recipe data handling, MSW testing setup, and U
 
 ---
 
+**Me** (2026-02-07 17:18:01):
+we have a recipe repository but the http part doesnt implement the interface. Ask the mob what they think and what they should do about this. I will review their idea.
+
+---
+
+**Claude** (2026-02-07 17:19:47):
+The mob evaluated three options for handling a read-only HTTP adapter: simplifying docs (Option A), implementing full CRUD (Option B, deemed impractical), or splitting into read/write interfaces (Option C). They recommended Option C for adhering to hexagonal architecture but noted it might be over-engineered for a POC.
+
+---
+
+**Me** (2026-02-07 17:20:22):
+Go for Option C
+
+---
+
+**Me** (2026-02-07 17:20:46):
+resume
+
+---
+
+**Claude** (2026-02-07 20:07:59):
+All 10 tests passed after restructuring recipe interfaces for segregation and updating the HTTP adapter to use a dedicated reader. The hook now leverages the new `HttpRecipeReader.findAll()` method.
+
+---
+
+**Me** (2026-02-07 20:10:15):
+I've noticed that there is some unused code? Should this be a skill as part of the programmer agents or should it be something to run as a hook after finishing a coding task? What is the best practise with claude code?
+
+---
+
+**Me** (2026-02-07 20:12:45):
+in intellij there are tools to find unused method.s Is there anything else that I could use in combination with llm to do static analysis?
+
+---
+
+**Claude** (2026-02-07 20:13:41):
+knip is a TypeScript CLI tool for detecting unused code (files, exports, dependencies) via static analysis, surpassing TypeScript's noUnusedLocals by understanding import graphs. When combined with LLMs, it enables automated code review and cleanup through pre-commit hooks, Claude Code hooks, or CLAUDE.md rules, with the option to set up knip for the Recipory project.
+
+---
+
+**Me** (2026-02-07 20:14:32):
+yes, what do you mean wth claude code hooK? how would that work?
+
+---
+
+**Claude** (2026-02-07 20:15:13):
+The CLAUDE.md rule automatically runs knip with the agent fixing issues, while a Pre-commit hook acts as a safety net. Stop hooks notify but don’t resolve issues, making the CLAUDE.md + Pre-commit combo the most effective workflow.
+
+---
+
+**Me** (2026-02-07 20:16:05):
+I just noticed in the docs that there is an mpc agent. https://knip.dev/blog/for-editors-and-agents. I am not familiar with mpc agents
+
+---
+
+**Claude** (2026-02-07 20:17:44):
+MCP servers let Claude Code use external tools like knip via a plugin system, with setup done via a single command creating a `.mcp.json` config. This enables automatic, agent-driven tool usage during sessions, offering project-scoped benefits without shell commands or extra rules.
+
+---
+
+**Me** (2026-02-07 20:18:09):
+yes
+
+---
+
+**Claude** (2026-02-07 20:18:55):
+The knip MCP server is configured with a project-scoped `.mcp.json` file accessible to repo clones. Restart Claude Code to enable native unused file/dependency detection via knip tools.
+
+---
+
+**Me** (2026-02-07 20:22:04):
+delete the domain tests because as defined by the testing strategy we test at higher level. We will only test things at the domain level if we struggle to test it at higher level.
+
+---
+
+**Claude** (2026-02-07 20:23:38):
+Verifying that tests continue to pass. Ensuring no recent changes have broken them.
+
+---
+
