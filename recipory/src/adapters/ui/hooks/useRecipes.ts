@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchRecipes } from '../../http/recipesApi.js';
+import { HttpRecipeReader } from '../../http/httpRecipeReader.js';
+
+const recipeReader = new HttpRecipeReader();
 
 export function useRecipes() {
   return useQuery({
     queryKey: ['recipes'],
-    queryFn: fetchRecipes,
+    queryFn: () => recipeReader.findAll(),
   });
 }

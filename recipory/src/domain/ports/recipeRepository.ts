@@ -1,9 +1,4 @@
-import type { Recipe } from '../recipe.js';
+import type { RecipeReader } from './recipeReader.js';
+import type { RecipeWriter } from './recipeWriter.js';
 
-export interface RecipeRepository {
-  save(recipe: Recipe): Promise<Recipe>;
-  findById(id: string): Promise<Recipe | null>;
-  findAll(): Promise<Recipe[]>;
-  search(query: string): Promise<Recipe[]>;
-  delete(id: string): Promise<void>;
-}
+export interface RecipeRepository extends RecipeReader, RecipeWriter {}
