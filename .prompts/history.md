@@ -723,3 +723,13 @@ lets commit the previous changes now
 
 ---
 
+**Claude** (2026-02-07 20:25:36):
+The knip MCP configuration separates concerns and adheres to interface segregation. It will be excluded from this commit and can be committed separately if needed.
+
+---
+
+**Me** (2026-02-07 20:26:14):
+yes please commit the mcp json and the modified prompts
+
+---
+
