@@ -5,6 +5,3 @@
      z:1: command not found: __zoxide_z
 - now that we have a working app, let's start deploying to a server.
 - we probably need an agent that knows how to improve the codebase token consumption.
-- tests on the server? probably as soon as the backend has business logic
-- review RECIPE_DATA_DIR. Dont like if statement to decide default one.
-- folder structure server etc.
