@@ -1073,3 +1073,23 @@ All 9 E2E tests passed successfully. Everything is green.
 
 ---
 
+**Me** (2026-02-08 22:13:21):
+RECIPE_DATA_DIR. The logic should be consistent and simplified. Basically we can also define the value for the server so it is simpler to understand.
+
+---
+
+**Claude** (2026-02-08 22:14:38):
+I am verifying if it still works to ensure it remains functional.
+
+---
+
+**Me** (2026-02-08 22:14:38):
+What I meant is that also when running the server we could define the path so it is the same logic as the tests. in this way we have less variances in the code.
+
+---
+
+**Claude** (2026-02-08 22:16:47):
+The script's inline `RECIPE_DATA_DIR=data/recipes` overrides Playwright's environment variable. Shell default syntax ensures this override only applies when the variable is not already set.
+
+---
+

@@ -6,9 +6,7 @@ import { recipeRoutes } from './routes/recipes.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
-const dataDir = process.env.RECIPE_DATA_DIR
-  ? join(projectRoot, process.env.RECIPE_DATA_DIR)
-  : join(projectRoot, 'data', 'recipes');
+const dataDir = join(projectRoot, process.env.RECIPE_DATA_DIR!);
 
 const repository = new FileRecipeRepository(dataDir);
 

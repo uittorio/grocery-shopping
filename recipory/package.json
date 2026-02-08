@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently --names server,vite \"npm run server\" \"vite\"",
-    "server": "tsx server/index.ts",
+    "server": "RECIPE_DATA_DIR=${RECIPE_DATA_DIR:-data/recipes} tsx server/index.ts",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
