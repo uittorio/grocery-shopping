@@ -38,4 +38,23 @@ export const handlers = [
     recipes.push(recipe);
     return HttpResponse.json(recipe, { status: 201 });
   }),
+  http.put('/api/recipes/:id', async ({ params, request }) => {
+    const id = params['id'] as string;
+    const index = recipes.findIndex(r => r.id === id);
+    if (index === -1) {
+      return new HttpResponse(null, { status: 404 });
+    }
+    const updated = (await request.json()) as Recipe;
+    recipes[index] = updated;
+    return HttpResponse.json(updated);
+  }),
+  http.delete('/api/recipes/:id', ({ params }) => {
+    const id = params['id'] as string;
+    const index = recipes.findIndex(r => r.id === id);
+    if (index === -1) {
+      return new HttpResponse(null, { status: 404 });
+    }
+    recipes.splice(index, 1);
+    return new HttpResponse(null, { status: 204 });
+  }),
 ];

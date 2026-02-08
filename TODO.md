@@ -1,2 +1,9 @@
 ### This is not for the agent
 - add constraints about raspbeery PI to help agent identify best solutions
+- when running tests agent is happening PATH everytime. 
+- agents always uses a specific version of node. Do we need nvmrc file to simplify things?
+- Noticed __zoxide__ error
+- prefer constant over function. add instructions
+- update readme to add gitleaks and knip (if required) in order to work with the software
+- add nvm and instructions 
+- now that we have a working app, let's start deploying to a server.

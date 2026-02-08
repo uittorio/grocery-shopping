@@ -42,7 +42,10 @@ src/
 │       ├── App.tsx
 │       ├── hooks/
 │       │   ├── useRecipes.ts
-│       │   └── useCreateRecipe.ts
+│       │   ├── useRecipe.ts
+│       │   ├── useCreateRecipe.ts
+│       │   ├── useUpdateRecipe.ts
+│       │   └── useDeleteRecipe.ts
 │       └── components/
 │           ├── RecipeList.tsx
 │           └── RecipeForm.tsx
@@ -81,6 +84,8 @@ data/
 - `GET /api/recipes` -- returns all recipes as JSON array
 - `GET /api/recipes/:id` -- returns single recipe
 - `POST /api/recipes` -- creates recipe, returns 201 with saved recipe
+- `PUT /api/recipes/:id` -- updates recipe, returns updated recipe (404 if not found)
+- `DELETE /api/recipes/:id` -- deletes recipe, returns 204 (404 if not found)
 
 Vite proxies `/api/*` requests to the Fastify server at `http://localhost:3001` during development.
 
@@ -89,6 +94,7 @@ Vite proxies `/api/*` requests to the Fastify server at `http://localhost:3001` 
 React Router v7 handles client-side routing:
 - `/` -- Recipe Library (RecipeList)
 - `/recipes/new` -- Add Recipe (RecipeForm)
+- `/recipes/:id/edit` -- Edit Recipe (RecipeForm in edit mode)
 
 ## Code Style
 

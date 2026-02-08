@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Recipe } from '../../domain/recipe.js';
 import type { RecipeReader } from '../../domain/ports/recipeReader.js';
@@ -49,6 +49,30 @@ export class FileRecipeRepository implements RecipeReader, RecipeWriter {
     }
 
     return recipe;
+  }
+
+  async update(recipe: Recipe): Promise<Recipe> {
+    const filePath = join(this.dataDir, `${recipe.id}.json`);
+    try {
+      await readFile(filePath, 'utf-8');
+    } catch {
+      throw new Error('Recipe not found');
+    }
+    await writeFile(filePath, JSON.stringify(recipe, null, 2));
+    return recipe;
+  }
+
+  async delete(id: string): Promise<void> {
+    const filePath = join(this.dataDir, `${id}.json`);
+    try {
+      await readFile(filePath, 'utf-8');
+    } catch {
+      throw new Error('Recipe not found');
+    }
+    await unlink(filePath);
+    const ids = await this.readIndex();
+    const updated = ids.filter(existingId => existingId !== id);
+    await this.writeIndex(updated);
   }
 
   private async readIndex(): Promise<string[]> {

@@ -5,8 +5,10 @@ import {
   hasValidationErrors,
   generateRecipeId,
 } from '../../../domain/recipe.js';
-import type { RecipeValidationErrors } from '../../../domain/recipe.js';
+import type { Recipe, RecipeValidationErrors } from '../../../domain/recipe.js';
 import { useCreateRecipe } from '../hooks/useCreateRecipe.js';
+import { useUpdateRecipe } from '../hooks/useUpdateRecipe.js';
+import { useDeleteRecipe } from '../hooks/useDeleteRecipe.js';
 
 interface IngredientFormRow {
   name: string;
@@ -18,13 +20,29 @@ function createEmptyIngredient(): IngredientFormRow {
   return { name: '', quantity: '', unit: '' };
 }
 
-export function RecipeForm() {
+function toFormRows(recipe: Recipe): IngredientFormRow[] {
+  return recipe.ingredients.map(ing => ({
+    name: ing.name,
+    quantity: ing.quantity !== null ? String(ing.quantity) : '',
+    unit: ing.unit ?? '',
+  }));
+}
+
+type RecipeFormProps = {
+  initialRecipe?: Recipe;
+};
+
+export function RecipeForm({ initialRecipe }: RecipeFormProps) {
   const navigate = useNavigate();
   const createRecipe = useCreateRecipe();
-  const [name, setName] = useState('');
-  const [ingredients, setIngredients] = useState<IngredientFormRow[]>([
-    createEmptyIngredient(),
-  ]);
+  const updateRecipe = useUpdateRecipe();
+  const deleteRecipe = useDeleteRecipe();
+  const isEditMode = !!initialRecipe;
+
+  const [name, setName] = useState(initialRecipe?.name ?? '');
+  const [ingredients, setIngredients] = useState<IngredientFormRow[]>(
+    initialRecipe ? toFormRows(initialRecipe) : [createEmptyIngredient()]
+  );
   const [errors, setErrors] = useState<RecipeValidationErrors>({});
 
   function handleAddIngredient() {
@@ -66,26 +84,48 @@ export function RecipeForm() {
     }
 
     const now = new Date().toISOString();
-    const recipe = {
-      id: generateRecipeId(),
-      name: name.trim(),
-      ingredients: parsedIngredients,
-      createdAt: now,
-      updatedAt: now,
-    };
 
-    createRecipe.mutate(recipe, {
-      onSuccess: () => navigate('/'),
-    });
+    if (isEditMode) {
+      const recipe: Recipe = {
+        id: initialRecipe.id,
+        name: name.trim(),
+        ingredients: parsedIngredients,
+        createdAt: initialRecipe.createdAt,
+        updatedAt: now,
+      };
+      updateRecipe.mutate(recipe, {
+        onSuccess: () => navigate('/'),
+      });
+    } else {
+      const recipe: Recipe = {
+        id: generateRecipeId(),
+        name: name.trim(),
+        ingredients: parsedIngredients,
+        createdAt: now,
+        updatedAt: now,
+      };
+      createRecipe.mutate(recipe, {
+        onSuccess: () => navigate('/'),
+      });
+    }
   }
 
   function handleCancel() {
     navigate('/');
   }
 
+  function handleDelete() {
+    if (!initialRecipe) return;
+    if (window.confirm('Are you sure you want to delete this recipe?')) {
+      deleteRecipe.mutate(initialRecipe.id, {
+        onSuccess: () => navigate('/'),
+      });
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit} className="recipe-form">
-      <h2>New Recipe</h2>
+      <h2>{isEditMode ? 'Edit Recipe' : 'New Recipe'}</h2>
 
       <div className="form-field">
         <label htmlFor="recipe-name">Recipe Name</label>
@@ -189,6 +229,15 @@ export function RecipeForm() {
         <button type="button" onClick={handleCancel} className="btn-secondary">
           Cancel
         </button>
+        {isEditMode && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="btn-danger"
+          >
+            Delete
+          </button>
+        )}
       </div>
     </form>
   );

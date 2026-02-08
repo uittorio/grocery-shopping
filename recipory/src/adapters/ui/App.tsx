@@ -1,5 +1,6 @@
-import { Routes, Route } from 'react-router';
+import { Routes, Route, useParams } from 'react-router';
 import { useRecipes } from './hooks/useRecipes.js';
+import { useRecipe } from './hooks/useRecipe.js';
 import { RecipeList } from './components/RecipeList.js';
 import { RecipeForm } from './components/RecipeForm.js';
 import './App.css';
@@ -18,6 +19,21 @@ function RecipeLibrary() {
   return <RecipeList recipes={recipes ?? []} />;
 }
 
+function EditRecipe() {
+  const { id } = useParams<{ id: string }>();
+  const { data: recipe, isLoading, error } = useRecipe(id!);
+
+  if (isLoading) {
+    return <div>Loading recipe...</div>;
+  }
+
+  if (error || !recipe) {
+    return <div>Recipe not found</div>;
+  }
+
+  return <RecipeForm initialRecipe={recipe} />;
+}
+
 export function App() {
   return (
     <div className="app">
@@ -28,6 +44,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<RecipeLibrary />} />
           <Route path="/recipes/new" element={<RecipeForm />} />
+          <Route path="/recipes/:id/edit" element={<EditRecipe />} />
         </Routes>
       </main>
     </div>

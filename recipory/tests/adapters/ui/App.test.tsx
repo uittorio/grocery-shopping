@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
@@ -109,6 +109,93 @@ describe('App', () => {
       const removeButtons = screen.getAllByRole('button', { name: 'Remove' });
       await user.click(removeButtons[0]!);
       expect(screen.getAllByLabelText('Name')).toHaveLength(1);
+    });
+  });
+
+  describe('Edit Recipe', () => {
+    async function navigateToEditRecipe() {
+      const user = userEvent.setup();
+      renderApp();
+
+      const recipeCard = await screen.findByRole('link', { name: /Spaghetti Carbonara/i });
+      await user.click(recipeCard);
+      await screen.findByText('Edit Recipe');
+
+      return user;
+    }
+
+    it('recipe cards are clickable and navigate to edit form', async () => {
+      await navigateToEditRecipe();
+
+      expect(screen.getByText('Edit Recipe')).toBeInTheDocument();
+    });
+
+    it('pre-populates the form with existing recipe data', async () => {
+      await navigateToEditRecipe();
+
+      expect(screen.getByLabelText('Recipe Name')).toHaveValue('Spaghetti Carbonara');
+
+      const ingredientNames = screen.getAllByLabelText('Name');
+      expect(ingredientNames[0]).toHaveValue('spaghetti');
+      expect(ingredientNames[1]).toHaveValue('eggs');
+      expect(ingredientNames[2]).toHaveValue('parmesan');
+    });
+
+    it('edits a recipe and saves changes', async () => {
+      const user = await navigateToEditRecipe();
+
+      const nameInput = screen.getByLabelText('Recipe Name');
+      await user.clear(nameInput);
+      await user.type(nameInput, 'Spaghetti Bolognese');
+
+      await user.click(screen.getByRole('button', { name: 'Save' }));
+
+      expect(await screen.findByText('Spaghetti Bolognese')).toBeInTheDocument();
+    });
+
+    it('shows validation error when editing recipe name to empty', async () => {
+      const user = await navigateToEditRecipe();
+
+      const nameInput = screen.getByLabelText('Recipe Name');
+      await user.clear(nameInput);
+
+      await user.click(screen.getByRole('button', { name: 'Save' }));
+
+      expect(await screen.findByText('Recipe name is required')).toBeInTheDocument();
+    });
+
+    it('navigates back to library when clicking Cancel', async () => {
+      const user = await navigateToEditRecipe();
+
+      await user.click(screen.getByRole('button', { name: 'Cancel' }));
+
+      expect(await screen.findByText('Spaghetti Carbonara')).toBeInTheDocument();
+      expect(screen.getByText('Recipe Library')).toBeInTheDocument();
+    });
+
+    it('deletes a recipe after confirmation', async () => {
+      const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
+      const user = await navigateToEditRecipe();
+
+      await user.click(screen.getByRole('button', { name: 'Delete' }));
+
+      expect(confirmSpy).toHaveBeenCalledWith('Are you sure you want to delete this recipe?');
+      expect(await screen.findByText('No recipes yet')).toBeInTheDocument();
+
+      confirmSpy.mockRestore();
+    });
+
+    it('keeps recipe when delete confirmation is cancelled', async () => {
+      const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(false);
+      const user = await navigateToEditRecipe();
+
+      await user.click(screen.getByRole('button', { name: 'Delete' }));
+
+      expect(confirmSpy).toHaveBeenCalled();
+      expect(screen.getByText('Edit Recipe')).toBeInTheDocument();
+      expect(screen.getByLabelText('Recipe Name')).toHaveValue('Spaghetti Carbonara');
+
+      confirmSpy.mockRestore();
     });
   });
 });

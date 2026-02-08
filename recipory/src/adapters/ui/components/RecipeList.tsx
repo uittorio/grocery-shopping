@@ -27,12 +27,16 @@ export function RecipeList({ recipes }: RecipeListProps) {
         </Link>
       </div>
       {recipes.map(recipe => (
-        <div key={recipe.id} className="recipe-card">
+        <Link
+          key={recipe.id}
+          to={`/recipes/${recipe.id}/edit`}
+          className="recipe-card"
+        >
           <h3>{recipe.name}</h3>
           <p className="ingredient-count">
             {recipe.ingredients.length} ingredient{recipe.ingredients.length !== 1 ? 's' : ''}
           </p>
-        </div>
+        </Link>
       ))}
     </div>
   );
