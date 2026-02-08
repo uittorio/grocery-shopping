@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw';
 import type { Recipe } from '../../src/domain/recipe.js';
 
-const mockRecipes: Record<string, Recipe> = {
-  '550e8400-e29b-41d4-a716-446655440000': {
+const mockRecipes: Recipe[] = [
+  {
     id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'Spaghetti Carbonara',
     ingredients: [
@@ -13,21 +13,29 @@ const mockRecipes: Record<string, Recipe> = {
     createdAt: '2026-02-07T00:00:00.000Z',
     updatedAt: '2026-02-07T00:00:00.000Z',
   },
-};
+];
 
-const recipeIndex = Object.keys(mockRecipes);
+let recipes = [...mockRecipes];
+
+export function resetMockRecipes() {
+  recipes = [...mockRecipes];
+}
 
 export const handlers = [
-  http.get('/data/recipes/index.json', () => {
-    return HttpResponse.json(recipeIndex);
+  http.get('/api/recipes', () => {
+    return HttpResponse.json(recipes);
   }),
-  http.get('/data/recipes/:id', ({ params }) => {
-    const filename = params['id'] as string;
-    const id = filename.replace('.json', '');
-    const recipe = mockRecipes[id];
+  http.get('/api/recipes/:id', ({ params }) => {
+    const id = params['id'] as string;
+    const recipe = recipes.find(r => r.id === id);
     if (!recipe) {
       return new HttpResponse(null, { status: 404 });
     }
     return HttpResponse.json(recipe);
+  }),
+  http.post('/api/recipes', async ({ request }) => {
+    const recipe = (await request.json()) as Recipe;
+    recipes.push(recipe);
+    return HttpResponse.json(recipe, { status: 201 });
   }),
 ];

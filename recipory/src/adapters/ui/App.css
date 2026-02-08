@@ -82,6 +82,155 @@ main {
   color: #95a5a6;
 }
 
+.recipe-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #2c3e50;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: #34495e;
+}
+
+.btn-secondary {
+  display: inline-block;
+  background: #ecf0f1;
+  color: #2c3e50;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #dfe6e9;
+}
+
+.recipe-form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+}
+
+.recipe-form h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+.form-field label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #2c3e50;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: #2c3e50;
+}
+
+.input-error {
+  border-color: #e74c3c !important;
+}
+
+.error-message {
+  display: block;
+  color: #e74c3c;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.ingredients-section {
+  border: 1px solid #ecf0f1;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.ingredients-section legend {
+  font-weight: 600;
+  color: #2c3e50;
+  padding: 0 0.5rem;
+}
+
+.ingredient-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.ingredient-row .form-field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.ingredient-row .form-field:first-child {
+  flex: 2;
+}
+
+.remove-ingredient {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  align-self: flex-end;
+  margin-bottom: 0.25rem;
+}
+
+.add-ingredient {
+  background: none;
+  border: 1px dashed #bdc3c7;
+  color: #7f8c8d;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.add-ingredient:hover {
+  border-color: #2c3e50;
+  color: #2c3e50;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+}
+
 /* Responsive design */
 @media (min-width: 600px) {
   .recipe-list {

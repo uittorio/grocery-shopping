@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import type { Recipe } from '../../../domain/recipe.js';
 
 type RecipeListProps = {
@@ -10,13 +11,21 @@ export function RecipeList({ recipes }: RecipeListProps) {
       <div className="empty-state">
         <p>No recipes yet</p>
         <p>Add your first recipe to get started</p>
+        <Link to="/recipes/new" className="btn-primary">
+          Add Recipe
+        </Link>
       </div>
     );
   }
 
   return (
     <div className="recipe-list">
-      <h2>Recipe Library</h2>
+      <div className="recipe-list-header">
+        <h2>Recipe Library</h2>
+        <Link to="/recipes/new" className="btn-primary">
+          Add Recipe
+        </Link>
+      </div>
       {recipes.map(recipe => (
         <div key={recipe.id} className="recipe-card">
           <h3>{recipe.name}</h3>

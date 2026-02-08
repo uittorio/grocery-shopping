@@ -803,3 +803,23 @@ The mob created an updated plan. The speaker will implement it.
 
 ---
 
+**Me** (2026-02-08 09:22:01):
+lets think about step 3 now. Ask the mob what they need in order to deliver step 3
+
+---
+
+**Claude** (2026-02-08 09:28:29):
+Fastify was chosen over Express for Raspberry Pi deployment due to its lighter memory usage, faster startup, and lower CPU overhead. Key decisions include Fastify backend, structured ingredient input, React Router v7, inline validation errors, TanStack Query for data flow, and integration testing with MSW.
+
+---
+
+**Me** (2026-02-08 09:31:52):
+yes
+
+---
+
+**Me** (2026-02-08 09:47:15):
+commit but first exclude data/recipes from git 
+
+---
+
