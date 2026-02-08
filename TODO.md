@@ -7,3 +7,4 @@
 - update readme to add gitleaks and knip (if required) in order to work with the software
 - add nvm and instructions 
 - now that we have a working app, let's start deploying to a server.
+- we probably need an agent that knows how to improve the codebase token consumption.

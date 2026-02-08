@@ -179,7 +179,7 @@ describe('App', () => {
 
       await user.click(screen.getByRole('button', { name: 'Delete' }));
 
-      expect(confirmSpy).toHaveBeenCalledWith('Are you sure you want to delete this recipe?');
+      expect(confirmSpy).toHaveBeenCalledWith('Are you sure you want to delete "Spaghetti Carbonara"?');
       expect(await screen.findByText('No recipes yet')).toBeInTheDocument();
 
       confirmSpy.mockRestore();

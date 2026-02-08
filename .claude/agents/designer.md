@@ -2,7 +2,7 @@
 name: designer
 description: UX/Web Designer. Invoke for UI design, interaction patterns, user flows, wireframes, visual systems, and accessibility.
 tools: Read, Glob, Grep, Write, Edit, Task
-model: haiku
+model: sonnet
 icon: 🎨
 ---
 
