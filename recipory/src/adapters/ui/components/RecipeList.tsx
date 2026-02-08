@@ -22,6 +22,9 @@ export function RecipeList({ recipes }: RecipeListProps) {
     <div className="recipe-list">
       <div className="recipe-list-header">
         <h2>Recipe Library</h2>
+        <span className="recipe-count" aria-live="polite">
+          {recipes.length} recipe{recipes.length !== 1 ? 's' : ''}
+        </span>
         <Link to="/recipes/new" className="btn-primary">
           Add Recipe
         </Link>

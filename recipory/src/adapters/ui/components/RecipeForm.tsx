@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import {
   validateRecipe,
@@ -44,6 +44,13 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
     initialRecipe ? toFormRows(initialRecipe) : [createEmptyIngredient()]
   );
   const [errors, setErrors] = useState<RecipeValidationErrors>({});
+  const validationRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (hasValidationErrors(errors) && validationRef.current) {
+      validationRef.current.focus();
+    }
+  }, [errors]);
 
   function handleAddIngredient() {
     setIngredients([...ingredients, createEmptyIngredient()]);
@@ -141,7 +148,7 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
       <h2>{isEditMode ? 'Edit Recipe' : 'New Recipe'}</h2>
 
       {hasValidationErrors(errors) && (
-        <div className="validation-summary" role="alert">
+        <div className="validation-summary" role="alert" ref={validationRef} tabIndex={-1}>
           <p>Please fix the following errors:</p>
           <ul>
             {getErrorMessages().map((msg, i) => (
@@ -152,16 +159,17 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
       )}
 
       <div className="form-field">
-        <label htmlFor="recipe-name">Recipe Name</label>
+        <label htmlFor="recipe-name" className="required">Recipe Name</label>
         <input
           id="recipe-name"
           type="text"
           value={name}
           onChange={e => setName(e.target.value)}
-          placeholder="e.g., Spaghetti Bolognese"
+          placeholder="Spaghetti Bolognese"
           className={errors.name ? 'input-error' : ''}
           aria-required="true"
           aria-describedby={errors.name ? 'recipe-name-error' : undefined}
+          autoFocus
         />
         {errors.name && (
           <span id="recipe-name-error" className="error-message">
@@ -171,14 +179,22 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
       </div>
 
       <fieldset className="ingredients-section">
-        <legend>Ingredients</legend>
+        <legend className="required">Ingredients</legend>
         {errors.ingredients && (
           <span className="error-message">{errors.ingredients}</span>
+        )}
+        {ingredients.length > 0 && (
+          <div className="ingredient-headers" aria-hidden="true">
+            <span className="ingredient-header-name">Name</span>
+            <span className="ingredient-header-qty">Quantity</span>
+            <span className="ingredient-header-unit">Unit</span>
+            <span className="ingredient-header-action"></span>
+          </div>
         )}
         {ingredients.map((ingredient, index) => (
           <div key={index} className="ingredient-row">
             <div className="form-field">
-              <label htmlFor={`ingredient-name-${index}`}>Name</label>
+              <label htmlFor={`ingredient-name-${index}`} className="sr-only">Name</label>
               <input
                 id={`ingredient-name-${index}`}
                 type="text"
@@ -186,7 +202,7 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
                 onChange={e =>
                   handleIngredientChange(index, 'name', e.target.value)
                 }
-                placeholder="e.g., flour"
+                placeholder="flour"
                 className={errors.ingredientNames?.[index] ? 'input-error' : ''}
                 aria-required="true"
                 aria-describedby={
@@ -205,7 +221,7 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
               )}
             </div>
             <div className="form-field">
-              <label htmlFor={`ingredient-quantity-${index}`}>Quantity</label>
+              <label htmlFor={`ingredient-quantity-${index}`} className="sr-only">Quantity</label>
               <input
                 id={`ingredient-quantity-${index}`}
                 type="number"
@@ -213,11 +229,11 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
                 onChange={e =>
                   handleIngredientChange(index, 'quantity', e.target.value)
                 }
-                placeholder="e.g., 500"
+                placeholder="500"
               />
             </div>
             <div className="form-field">
-              <label htmlFor={`ingredient-unit-${index}`}>Unit</label>
+              <label htmlFor={`ingredient-unit-${index}`} className="sr-only">Unit</label>
               <input
                 id={`ingredient-unit-${index}`}
                 type="text"
@@ -225,7 +241,7 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
                 onChange={e =>
                   handleIngredientChange(index, 'unit', e.target.value)
                 }
-                placeholder="e.g., g"
+                placeholder="g"
               />
             </div>
             <button
