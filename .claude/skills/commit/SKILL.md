@@ -11,7 +11,6 @@ Create a git commit following these steps:
 2. Run `git log --oneline -5` to see recent commit message style
 3. Run Knip (`mcp__knip__knip-run`) on `recipory/` to check for unused files, exports, and dependencies
    - If Knip finds issues: fix them (delete unused files, remove unused exports) before staging
-   - Do NOT delete code that is clearly work-in-progress or part of an incomplete feature — ask first
    - Report what was cleaned up in the commit message
 4. Stage all relevant changed files (prefer specific file names over `git add -A`)
 5. Do NOT stage files that contain secrets (.env, credentials, etc.)
