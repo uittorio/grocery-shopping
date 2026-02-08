@@ -1008,3 +1008,23 @@ The document has been updated with a new Prerequisites section detailing gitleak
 
 ---
 
+**Me** (2026-02-08 15:40:46):
+Agents always uses a specific version of node. Do we need nvmrc file to simplify things? we could add nvm with an nvmrc file. any other approaches. We probably need an hook or something that starts with any agent session that does nvm use. Suggestions?
+
+---
+
+**Claude** (2026-02-08 15:41:32):
+Use `.nvmrc` for simplicity or switch to fnm/Volta for reliable version management, especially with agents. nvm's reliance on shell functions causes issues, while fnm/Volta act as binaries that work consistently across all environments.
+
+---
+
+**Me** (2026-02-08 15:42:54):
+I like fnm. use it and add instructions where needed
+
+---
+
+**Claude** (2026-02-08 15:50:48):
+The setup includes fnm installed via Homebrew, a pinned `.node-version` file, updated README instructions, and the `--use-on-cd` flag for automatic Node version switching on `cd`. Add `eval "$(fnm env --use-on-cd)"` to your shell config and restart for auto-switching to work.
+
+---
+
