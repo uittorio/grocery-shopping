@@ -48,7 +48,6 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 - Create data/recipes/ folder
 - Write 2-3 example recipe JSON files
 - Wire JSON repository into the app (replace in-memory adapter)
-- Integration test for JSON repository
 
 **Acceptance criteria**:
 - User reloads the app and still sees the same recipes

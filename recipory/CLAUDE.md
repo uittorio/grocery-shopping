@@ -25,21 +25,13 @@ The codebase follows hexagonal (ports & adapters) architecture. The domain has z
 ```
 src/
 ├── domain/           # Pure business logic, no imports from outside domain
-│   ├── recipe.ts     # Entity factory: createRecipe() validates and returns a plain object
+│   ├── recipe.ts     # Recipe and Ingredient type definitions
 │   └── ports/        # Interfaces that adapters must implement
-│       ├── recipeReader.ts    # Read-only operations
-│       ├── recipeWriter.ts    # Write operations
-│       └── recipeRepository.ts  # Combines reader + writer
-│
-├── application/      # Use cases: orchestrate domain through ports
-│   └── listRecipes.ts  # Factory: createListRecipes(repo) -> async function
+│       └── recipeReader.ts    # Read-only operations
 │
 ├── adapters/         # Implementations of ports + UI
-│   ├── storage/      # Persistence adapters (implement port interfaces)
-│   │   └── inMemoryRecipeRepository.ts
 │   ├── http/         # HTTP adapters for external APIs
-│   │   ├── httpRecipeReader.ts  # Implements RecipeReader
-│   │   └── recipesApi.ts
+│   │   └── httpRecipeReader.ts  # Implements RecipeReader
 │   └── ui/           # React components
 │       ├── App.tsx
 │       ├── hooks/
@@ -51,7 +43,9 @@ src/
 │
 └── public/           # Static files served by Vite
     └── data/
-        └── recipes.json  # Hardcoded recipe data
+        └── recipes/            # Individual recipe JSON files
+            ├── index.json      # Array of recipe IDs
+            ├── {id}.json       # One file per recipe
 ```
 
 ### Rules
@@ -85,7 +79,7 @@ Test the system **from the user's perspective**, as close to production behaviou
 
 - **TanStack Query** handles data fetching in the UI
 - **MSW** intercepts HTTP requests in tests and returns mock data
-- **JSON file** serves as the real data source (in `public/data/recipes.json`)
+- **JSON files** serve as the real data source (in `public/data/recipes/`)
 - Tests render the actual UI components with real query hooks
 - No mocking of React Query or component internals
 

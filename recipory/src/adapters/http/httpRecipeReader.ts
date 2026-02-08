@@ -3,16 +3,17 @@ import type { RecipeReader } from '../../domain/ports/recipeReader.js';
 
 export class HttpRecipeReader implements RecipeReader {
   async findAll(): Promise<Recipe[]> {
-    const response = await fetch('/data/recipes.json');
-    if (!response.ok) {
-      throw new Error('Failed to fetch recipes');
+    const indexResponse = await fetch('/data/recipes/index.json');
+    if (!indexResponse.ok) {
+      throw new Error('Failed to fetch recipe index');
     }
-    return await response.json();
+    const ids: string[] = await indexResponse.json();
+    const recipes = await Promise.all(ids.map(id => this.fetchRecipe(id)));
+    return recipes.filter((r): r is Recipe => r !== null);
   }
 
   async findById(id: string): Promise<Recipe | null> {
-    const recipes = await this.findAll();
-    return recipes.find(recipe => recipe.id === id) ?? null;
+    return this.fetchRecipe(id);
   }
 
   async search(query: string): Promise<Recipe[]> {
@@ -26,5 +27,13 @@ export class HttpRecipeReader implements RecipeReader {
         ing.name.toLowerCase().includes(lowerQuery)
       );
     });
+  }
+
+  private async fetchRecipe(id: string): Promise<Recipe | null> {
+    const response = await fetch(`/data/recipes/${id}.json`);
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
   }
 }
