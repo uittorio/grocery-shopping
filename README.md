@@ -45,8 +45,3 @@ Two shell scripts are registered as hooks in `.claude/settings.json`:
 ### Ollama for cheap local summarisation
 
 Claude's responses can be very long. Logging them verbatim would make the history unreadable. Instead, `log-response.sh` sends each response to a local Ollama instance for a short summary. It doesnt work very well sometimes.
-
-### Secret test
-personal_info=vittorio.gue@gmail.com
-
-folder=Users/vittorio.gue/
