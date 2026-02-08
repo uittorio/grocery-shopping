@@ -933,3 +933,8 @@ commit first and then implement these fixes
 
 ---
 
+**Claude** (2026-02-08 15:23:46):
+The fixes improved accessibility, form validation, and mobile UI, addressing recipe counts, ingredient headers, required fields, and focus management. Item #1 remains unresolved as a design decision between structured and free-text ingredients.
+
+---
+

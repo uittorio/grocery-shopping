@@ -10,8 +10,7 @@
 - add nvm and instructions 
 - now that we have a working app, let's start deploying to a server.
 - we probably need an agent that knows how to improve the codebase token consumption.
-- improve claude to automatically review user experience.
-- e2e tests also used to review user experience
 - tests on the backend later on
 - review RECIPE_DATA_DIR
+- folder structure server etc.
 - can we ask the mob to run the ux-review skill at the end of the process? (maybe we need something smart that only runs when something user experience or design changes)
