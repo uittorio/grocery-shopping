@@ -9,10 +9,10 @@ export function RecipeList({ recipes }: RecipeListProps) {
   if (!recipes || recipes.length === 0) {
     return (
       <div className="empty-state">
-        <p>No recipes yet</p>
-        <p>Add your first recipe to get started</p>
+        <p>Your Recipe Library is Empty</p>
+        <p>Start building your collection by adding your first recipe.</p>
         <Link to="/recipes/new" className="btn-primary">
-          Add Recipe
+          Add Your First Recipe
         </Link>
       </div>
     );

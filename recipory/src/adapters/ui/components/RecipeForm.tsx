@@ -123,9 +123,33 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
     }
   }
 
+  function getErrorMessages(): string[] {
+    const messages: string[] = [];
+    if (errors.name) messages.push(errors.name);
+    if (errors.ingredients) messages.push(errors.ingredients);
+    if (errors.ingredientNames) {
+      const indices = Object.keys(errors.ingredientNames).map(Number);
+      for (const index of indices) {
+        messages.push(`Ingredient ${index + 1}: ${errors.ingredientNames[index]}`);
+      }
+    }
+    return messages;
+  }
+
   return (
     <form onSubmit={handleSubmit} className="recipe-form">
       <h2>{isEditMode ? 'Edit Recipe' : 'New Recipe'}</h2>
+
+      {hasValidationErrors(errors) && (
+        <div className="validation-summary" role="alert">
+          <p>Please fix the following errors:</p>
+          <ul>
+            {getErrorMessages().map((msg, i) => (
+              <li key={i}>{msg}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="form-field">
         <label htmlFor="recipe-name">Recipe Name</label>

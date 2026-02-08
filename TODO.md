@@ -8,3 +8,4 @@
 - add nvm and instructions 
 - now that we have a working app, let's start deploying to a server.
 - we probably need an agent that knows how to improve the codebase token consumption.
+- improve claude to automatically review user experience.

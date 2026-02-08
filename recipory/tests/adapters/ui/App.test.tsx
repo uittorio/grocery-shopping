@@ -58,8 +58,10 @@ describe('App', () => {
 
       await user.click(screen.getByRole('button', { name: 'Save' }));
 
-      expect(await screen.findByText('Recipe name is required')).toBeInTheDocument();
-      expect(screen.getByText('Ingredient name is required')).toBeInTheDocument();
+      expect(await screen.findByRole('alert')).toBeInTheDocument();
+      expect(screen.getByText('Please fix the following errors:')).toBeInTheDocument();
+      expect(screen.getAllByText('Recipe name is required').length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText('Ingredient name is required').length).toBeGreaterThanOrEqual(1);
     });
 
     it('shows validation error when no ingredients exist', async () => {
@@ -70,7 +72,8 @@ describe('App', () => {
       await user.type(screen.getByLabelText('Recipe Name'), 'Test Recipe');
       await user.click(screen.getByRole('button', { name: 'Save' }));
 
-      expect(await screen.findByText('At least one ingredient is required')).toBeInTheDocument();
+      expect(await screen.findByRole('alert')).toBeInTheDocument();
+      expect(screen.getAllByText('At least one ingredient is required').length).toBeGreaterThanOrEqual(1);
     });
 
     it('creates a recipe and navigates back to library', async () => {
@@ -161,7 +164,8 @@ describe('App', () => {
 
       await user.click(screen.getByRole('button', { name: 'Save' }));
 
-      expect(await screen.findByText('Recipe name is required')).toBeInTheDocument();
+      expect(await screen.findByRole('alert')).toBeInTheDocument();
+      expect(screen.getAllByText('Recipe name is required').length).toBeGreaterThanOrEqual(1);
     });
 
     it('navigates back to library when clicking Cancel', async () => {
@@ -180,7 +184,7 @@ describe('App', () => {
       await user.click(screen.getByRole('button', { name: 'Delete' }));
 
       expect(confirmSpy).toHaveBeenCalledWith('Are you sure you want to delete "Spaghetti Carbonara"?');
-      expect(await screen.findByText('No recipes yet')).toBeInTheDocument();
+      expect(await screen.findByText('Your Recipe Library is Empty')).toBeInTheDocument();
 
       confirmSpy.mockRestore();
     });
