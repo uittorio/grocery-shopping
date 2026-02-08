@@ -1,5 +1,4 @@
 ### This is not for the agent. Is a todo list of things I've noticed that I am not sure when to fix
-- add constraints about raspbeery PI to help agent identify best solutions
 - when running tests agent is appending PATH everytime. 
 - agents always uses a specific version of node. Do we need nvmrc file to simplify things? add nvm and instructions
 - Noticed __zoxide__ error

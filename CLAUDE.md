@@ -21,6 +21,7 @@ See `product/PRODUCT.md` for the full product description.
 ## Key Context
 
 - This is a POC/personal tool for a single family, running locally on a trusted network
+- **Target hardware: Raspberry Pi (2 GB RAM)** — choose lightweight frameworks and minimal dependencies. Avoid heavy runtimes, large bundle sizes, and CPU-intensive tools. This applies to both backend (server) and build tooling choices.
 - The user is technical — no need for cloud hosting, auth flows, or onboarding simplification
 - Tesco automation is the core value — a shopping list fallback is not acceptable
 

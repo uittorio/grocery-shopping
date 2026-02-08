@@ -978,3 +978,23 @@ The mob will review all changes impacting user experience, including API respons
 
 ---
 
+**Me** (2026-02-08 15:35:06):
+make sure the team is aware that this software will run on a raspberry pi. this is useful for the programmer and architect so they will choose the more suited framework etc 
+
+---
+
+**Claude** (2026-02-08 15:35:36):
+The root `CLAUDE.md` is the correct location since all agents access it. The constraint will be added to the "Key Context" section.
+
+---
+
+**Me** (2026-02-08 15:37:00):
+also update to add the specifics. Its a raspberri pi with 2GB of RAM
+
+---
+
+**Claude** (2026-02-08 15:37:28):
+The 2 GB RAM constraint is now explicitly stated, prompting agents to exercise caution with memory-intensive tasks.
+
+---
+
