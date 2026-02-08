@@ -1,0 +1,16 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "local-user-path"
+description = "Absolute path containing local username"
+regex = '''/Users/[a-zA-Z0-9._@-]+/'''
+tags = ["local-path"]
+
+[allowlist]
+paths = [
+  '''node_modules/''',
+  '''dist/''',
+  '''.claude/settings\.local\.json''',
+  '''\.prompts/history\.md''',
+]
