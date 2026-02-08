@@ -1,8 +1,8 @@
 # Recipory Incremental Delivery Plan
 
-**Version**: 1.0
-**Date**: 2026-02-02
-**Status**: For Review
+**Version**: 2.0
+**Date**: 2026-02-08
+**Status**: In Progress (Increments 1-2 complete)
 
 ## Overview
 
@@ -10,53 +10,52 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 
 ---
 
-## Increment 1: Walking Skeleton
+## Increment 1: Walking Skeleton — COMPLETE
 
 **What it delivers (user-visible)**:
 - A React app loads in the browser
-- Shows a hardcoded recipe (name + 3 ingredients) in a basic list
+- Shows recipes from static JSON files in a basic list
 
 **What it builds (technical)**:
-- Project structure (folders per ARCHITECTURE.md)
-- Domain: Recipe entity with validation
-- Application: listRecipes() use case
-- Adapter: In-memory repository (hardcoded data)
-- UI: Minimal RecipeList component
-- Basic test for Recipe entity
+- Project structure with hexagonal architecture
+- Domain: Recipe and Ingredient type definitions
+- Port: RecipeReader interface (read-only operations)
+- Adapter: HttpRecipeReader fetches from static JSON via HTTP
+- UI: RecipeList component with TanStack Query integration
+- Integration test that renders UI and asserts on DOM content
 
 **Acceptance criteria**:
 - User opens the app and sees "Spaghetti Carbonara" with 3 ingredients
-- Domain tests pass
+- Integration tests pass
 - Code follows hexagonal architecture (domain has no I/O dependencies)
 
 **Rationale**:
-- *Programmer*: Proves the stack works end-to-end before investing in persistence
+- *Programmer*: Proves the stack works end-to-end with realistic data fetching
 - *Architect*: Validates hexagonal architecture with a vertical slice
 - *Product Owner*: Users see recipes immediately, building confidence
 - *User Persona*: "I can see where my recipes will live"
 
 ---
 
-## Increment 2: JSON Persistence
+## Increment 2: JSON Data Loading — COMPLETE
 
 **What it delivers (user-visible)**:
-- Recipe data now comes from real JSON files
+- Recipe data comes from individual JSON files
 - Data persists across app reloads
 
 **What it builds (technical)**:
-- Adapter: JSON file repository (implements RecipeRepository port)
-- Create data/recipes/ folder
-- Write 2-3 example recipe JSON files
-- Wire JSON repository into the app (replace in-memory adapter)
+- Individual recipe files in `public/data/recipes/{id}.json`
+- Index file at `public/data/recipes/index.json`
+- HttpRecipeReader fetches index, then individual recipes
 
 **Acceptance criteria**:
 - User reloads the app and still sees the same recipes
 - JSON files are readable and editable by hand
-- Repository tests pass (unit + integration)
+- Integration tests pass
 
 **Rationale**:
-- *Architect*: Validates storage adapter; port abstraction proven
-- *Programmer*: Small increment (just swap adapters); testable
+- *Architect*: Validates HTTP adapter; port abstraction proven
+- *Programmer*: Static JSON served by Vite; testable via MSW
 - *Product Owner*: Data persistence is required before users can add recipes
 
 ---
@@ -70,18 +69,18 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 - New recipe appears in the library immediately
 
 **What it builds (technical)**:
-- Application: createRecipe() use case
-- Domain: Recipe validation (name required, at least 1 ingredient)
+- Domain: Recipe validation logic (name required, at least 1 ingredient)
+- Port: RecipeWriter interface (create operation)
 - UI: RecipeForm component with ingredient rows
 - UI: "Add Recipe" button and routing to Recipe Detail screen
-- Update RecipeList to show all recipes from storage
-- Tests for createRecipe use case
+- Integration tests for the full create flow
 
 **Acceptance criteria**:
 - User clicks "Add Recipe", enters name and 2 ingredients, clicks Save
 - New recipe appears in Recipe Library
-- Recipe is saved to data/recipes/{id}.json
+- Recipe is saved to `data/recipes/{id}.json`
 - Validation errors show if name is missing or no ingredients
+- Integration tests pass
 
 **Rationale**:
 - *Product Owner*: Users can now build their recipe library (core value prop)
@@ -99,16 +98,17 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 - Delete a recipe (with confirmation)
 
 **What it builds (technical)**:
-- Application: updateRecipe(), deleteRecipe() use cases
+- Port: RecipeWriter update and delete operations
 - UI: Edit mode for RecipeForm (populate existing data)
 - UI: Delete button with confirmation dialog
 - UI: Navigation from recipe card to edit screen
-- Tests for update and delete use cases
+- Integration tests for edit and delete flows
 
 **Acceptance criteria**:
-- User taps recipe card, edits ingredients, saves - changes persist
-- User deletes a recipe - removed from library and JSON file deleted
+- User taps recipe card, edits ingredients, saves — changes persist
+- User deletes a recipe — removed from library and JSON file deleted
 - Cancel button returns without saving changes
+- Integration tests pass
 
 **Rationale**:
 - *Product Owner*: Full library management (table stakes)
@@ -128,25 +128,25 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 - Remove ingredients before copying
 
 **What it builds (technical)**:
-- Application: generateShoppingList(recipeIds) use case
 - Domain: Shopping list aggregation logic (no quantity aggregation in MVP)
 - UI: WeeklyPlanner component (recipe selection with checkboxes)
 - UI: ShoppingList component (ingredient list with remove buttons)
 - UI: Clipboard API integration
-- Tests for shopping list generation logic
+- Integration tests for the full shopping flow
 
 **Acceptance criteria**:
 - User selects 2 recipes, clicks "Generate Shopping List"
 - Sees combined ingredient list (duplicates not merged)
 - Removes one ingredient, clicks "Copy to Clipboard"
-- Pastes into Notes app - plain text list appears
+- Pastes into Notes app — plain text list appears
 - Confirmation toast shows "Copied!"
+- Integration tests pass
 
 **Rationale**:
-- *Product Owner*: Core value prop delivered - plan weekly shopping
-- *Designer*: Completes Flow 2 - both screens 3a and 3b needed together
-- *User Persona*: "This is what I came for - I can plan my shopping now"
-- *Architect*: Validates domain service (shopping list aggregation)
+- *Product Owner*: Core value prop delivered — plan weekly shopping
+- *Designer*: Completes Flow 2 — both screens 3a and 3b needed together
+- *User Persona*: "This is what I came for — I can plan my shopping now"
+- *Architect*: Validates domain logic for shopping list aggregation
 - *Programmer*: Shopping list is transient state; clean separation
 
 ---
@@ -154,8 +154,8 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 ## Technical Dependencies
 
 ### Sequential (hard dependencies):
-1. Increment 1 before 2 (need structure before persistence)
-2. Increment 2 before 3 (need persistence before CRUD)
+1. Increment 1 before 2 (need structure before data loading)
+2. Increment 2 before 3 (need data loading before CRUD)
 3. Increment 3 before 4 (need create before edit)
 4. Increment 3 before 5 (need recipes before shopping list)
 
@@ -166,7 +166,7 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 
 ## Out of Scope (Explicitly Deferred)
 
-- Search recipes (not critical for MVP - add after Increment 5)
+- Search recipes (not critical for MVP — add after Increment 5)
 - Ingredient aggregation (DESIGN_SPEC defers to v1.1)
 - Recipe tags or categories
 - Cooking instructions
@@ -180,7 +180,7 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 |-------|-------------|
 | Product Owner | Feature ordering for early user value, acceptance criteria |
 | Architect | Hexagonal architecture validation strategy, adapter sequencing |
-| Programmer | Vertical slice approach, test strategy, increment sizing |
+| Programmer | Vertical slice approach, integration-first test strategy, increment sizing |
 | Designer | Empty states, accessibility requirements, flow completion dependencies |
 | User Persona | User value validation, confidence-building moments |
 

@@ -793,3 +793,13 @@ The mob determined Increment 2 is mostly complete, focusing on reorganizing stat
 
 ---
 
+**Me** (2026-02-08 09:17:23):
+@discovery/recipory/DELIVERY_PLAN.md this file contains some details implementation about testing. Can you ask the mob to update the delivery plan based on the new conventions that we recently defined (testing strategy, architecture etc?)
+
+---
+
+**Claude** (2026-02-08 09:19:37):
+The mob created an updated plan. The speaker will implement it.
+
+---
+
