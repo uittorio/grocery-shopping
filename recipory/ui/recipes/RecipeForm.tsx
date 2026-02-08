@@ -4,8 +4,8 @@ import {
   validateRecipe,
   hasValidationErrors,
   generateRecipeId,
-} from '../../../shared/recipe.js';
-import type { Recipe, RecipeValidationErrors } from '../../../shared/recipe.js';
+} from '../../shared/recipe.js';
+import type { Recipe, RecipeValidationErrors } from '../../shared/recipe.js';
 import { useCreateRecipe } from './useCreateRecipe.js';
 import { useUpdateRecipe } from './useUpdateRecipe.js';
 import { useDeleteRecipe } from './useDeleteRecipe.js';

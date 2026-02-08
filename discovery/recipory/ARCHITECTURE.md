@@ -51,32 +51,32 @@ recipory/
     recipe.ts                    # Recipe, Ingredient types, validation, ID generation
 
   ui/
-    src/
-      adapters/                  # HTTP adapters (browser-side, calls API)
-        httpRecipeReader.ts
-        httpRecipeWriter.ts
-      recipes/                   # Feature folder (components, hooks, ports)
-        ports/
-          recipeReader.ts        # Read-only operations interface
-          recipeWriter.ts        # Write operations interface
-        RecipeList.tsx
-        RecipeForm.tsx
-        useRecipes.ts
-        useRecipe.ts
-        useCreateRecipe.ts
-        useUpdateRecipe.ts
-        useDeleteRecipe.ts
-      App.tsx
-      App.css
-      main.tsx                   # Composition root
+    adapters/                    # HTTP adapters (browser-side, calls API)
+      httpRecipeReader.ts
+      httpRecipeWriter.ts
+    recipes/                     # Feature folder (components, hooks, ports)
+      ports/
+        recipeReader.ts          # Read-only operations interface
+        recipeWriter.ts          # Write operations interface
+      RecipeLibrary.tsx          # Recipe list page (loading, error, data)
+      EditRecipe.tsx             # Edit recipe page (fetch + form)
+      RecipeList.tsx
+      RecipeForm.tsx
+      useRecipes.ts
+      useRecipe.ts
+      useCreateRecipe.ts
+      useUpdateRecipe.ts
+      useDeleteRecipe.ts
+    App.tsx
+    App.css
+    main.tsx                     # Composition root
 
   server/
-    src/
-      adapters/
-        fileRecipeRepository.ts  # Reads/writes JSON files
-      routes/
-        recipes.ts               # Recipe CRUD route handlers
-      index.ts                   # Server setup + start
+    adapters/
+      fileRecipeRepository.ts    # Reads/writes JSON files
+    routes/
+      recipes.ts                 # Recipe CRUD route handlers
+    index.ts                     # Server setup + start
 
   data/                          # JSON storage location
     recipes/
@@ -93,10 +93,10 @@ recipory/
 ### What goes where
 
 - **shared/**: Pure types and validation functions. No I/O, no React, no file system. Shared between UI and server.
-- **ui/src/recipes/**: Feature folder containing React components, hooks, and port interfaces (what the UI needs from its adapters).
-- **ui/src/adapters/**: HTTP adapters implementing UI port interfaces.
-- **server/src/adapters/**: Server-side adapters (file-based storage) using shared types directly.
-- **server/src/routes/**: Fastify route handlers.
+- **ui/recipes/**: Feature folder containing React components, hooks, and port interfaces (what the UI needs from its adapters).
+- **ui/adapters/**: HTTP adapters implementing UI port interfaces.
+- **server/adapters/**: Server-side adapters (file-based storage) using shared types directly.
+- **server/routes/**: Fastify route handlers.
 - **data/**: One JSON file per recipe. Simple, inspectable, version-control friendly.
 
 ---

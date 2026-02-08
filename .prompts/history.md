@@ -1063,3 +1063,13 @@ Final verification to ensure code compiles and tests pass. Confirming all compon
 
 ---
 
+**Me** (2026-02-08 22:01:01):
+a few things. src is unnecessary in both server and ui. index.html shoyuld go inside ui. Actually I am not sure index.html is needed. Also in the App.tsx there are recipe components. Lets move them in separate files in recipes. RecipeLibrary and EditRecipe
+
+---
+
+**Claude** (2026-02-08 22:09:50):
+All 9 E2E tests passed successfully. Everything is green.
+
+---
+

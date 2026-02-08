@@ -1,6 +1,6 @@
 import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Recipe } from '../../../shared/recipe.js';
+import type { Recipe } from '../../shared/recipe.js';
 
 export class FileRecipeRepository {
   constructor(private readonly dataDir: string) {}

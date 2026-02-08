@@ -1,4 +1,4 @@
-import type { Recipe } from '../../../../shared/recipe.js';
+import type { Recipe } from '../../../shared/recipe.js';
 
 export interface RecipeReader {
   findAll(): Promise<Recipe[]>;

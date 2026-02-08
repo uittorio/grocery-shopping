@@ -1,4 +1,4 @@
-import type { Recipe } from '../../../shared/recipe.js';
+import type { Recipe } from '../../shared/recipe.js';
 import type { RecipeReader } from '../recipes/ports/recipeReader.js';
 
 export class HttpRecipeReader implements RecipeReader {

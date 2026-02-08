@@ -1,4 +1,4 @@
-import type { Recipe } from '../../../shared/recipe.js';
+import type { Recipe } from '../../shared/recipe.js';
 import type { RecipeWriter } from '../recipes/ports/recipeWriter.js';
 
 export class HttpRecipeWriter implements RecipeWriter {

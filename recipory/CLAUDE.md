@@ -40,32 +40,32 @@ shared/                          # Contract: types + validation only
 └── recipe.ts                    # Recipe, Ingredient, RecipeValidationErrors, validateRecipe, hasValidationErrors, generateRecipeId
 
 ui/
-└── src/
-    ├── adapters/                # HTTP adapters (browser-side, calls API)
-    │   ├── httpRecipeReader.ts  # Implements RecipeReader
-    │   └── httpRecipeWriter.ts  # Implements RecipeWriter
-    ├── recipes/                 # Feature folder (components, hooks, ports)
-    │   ├── ports/
-    │   │   ├── recipeReader.ts  # Read-only operations interface
-    │   │   └── recipeWriter.ts  # Write operations interface
-    │   ├── RecipeList.tsx
-    │   ├── RecipeForm.tsx
-    │   ├── useRecipes.ts
-    │   ├── useRecipe.ts
-    │   ├── useCreateRecipe.ts
-    │   ├── useUpdateRecipe.ts
-    │   └── useDeleteRecipe.ts
-    ├── App.tsx
-    ├── App.css
-    └── main.tsx                 # Composition root
+├── adapters/                    # HTTP adapters (browser-side, calls API)
+│   ├── httpRecipeReader.ts      # Implements RecipeReader
+│   └── httpRecipeWriter.ts      # Implements RecipeWriter
+├── recipes/                     # Feature folder (components, hooks, ports)
+│   ├── ports/
+│   │   ├── recipeReader.ts      # Read-only operations interface
+│   │   └── recipeWriter.ts      # Write operations interface
+│   ├── RecipeLibrary.tsx        # Recipe list page (loading, error, data)
+│   ├── EditRecipe.tsx           # Edit recipe page (fetch + form)
+│   ├── RecipeList.tsx
+│   ├── RecipeForm.tsx
+│   ├── useRecipes.ts
+│   ├── useRecipe.ts
+│   ├── useCreateRecipe.ts
+│   ├── useUpdateRecipe.ts
+│   └── useDeleteRecipe.ts
+├── App.tsx
+├── App.css
+└── main.tsx                     # Composition root
 
 server/
-└── src/
-    ├── adapters/
-    │   └── fileRecipeRepository.ts  # Reads/writes JSON files
-    ├── routes/
-    │   └── recipes.ts               # Recipe CRUD route handlers
-    └── index.ts                     # Server setup + start
+├── adapters/
+│   └── fileRecipeRepository.ts  # Reads/writes JSON files
+├── routes/
+│   └── recipes.ts               # Recipe CRUD route handlers
+└── index.ts                     # Server setup + start
 
 data/
 └── recipes/                     # JSON file storage (server reads/writes here)
@@ -166,7 +166,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { App } from '../../ui/src/App.js';
+import { App } from '../../ui/App.js';
 
 it('displays recipes when loaded', async () => {
   const queryClient = new QueryClient({

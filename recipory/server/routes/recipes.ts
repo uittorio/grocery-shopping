@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import type { Recipe } from '../../../shared/recipe.js';
+import type { Recipe } from '../../shared/recipe.js';
 import type { FileRecipeRepository } from '../adapters/fileRecipeRepository.js';
 
 export async function recipeRoutes(
