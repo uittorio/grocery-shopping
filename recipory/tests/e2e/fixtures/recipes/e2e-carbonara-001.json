@@ -1,0 +1,11 @@
+{
+  "id": "e2e-carbonara-001",
+  "name": "Spaghetti Carbonara",
+  "ingredients": [
+    { "name": "spaghetti", "quantity": 400, "unit": "g" },
+    { "name": "eggs", "quantity": 4, "unit": "whole" },
+    { "name": "parmesan", "quantity": 100, "unit": "g" }
+  ],
+  "createdAt": "2026-01-01T00:00:00.000Z",
+  "updatedAt": "2026-01-01T00:00:00.000Z"
+}

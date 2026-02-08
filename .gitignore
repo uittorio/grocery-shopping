@@ -3,3 +3,7 @@
 node_modules/
 dist/
 recipory/data/recipes/
+recipory/data/test-recipes/
+recipory/screenshots/
+recipory/test-results/
+recipory/playwright-report/

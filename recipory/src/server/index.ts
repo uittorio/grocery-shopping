@@ -5,7 +5,10 @@ import { FileRecipeRepository } from '../adapters/server/fileRecipeRepository.js
 import { recipeRoutes } from './routes/recipes.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const dataDir = join(__dirname, '..', '..', 'data', 'recipes');
+const projectRoot = join(__dirname, '..', '..');
+const dataDir = process.env.RECIPE_DATA_DIR
+  ? join(projectRoot, process.env.RECIPE_DATA_DIR)
+  : join(projectRoot, 'data', 'recipes');
 
 const repository = new FileRecipeRepository(dataDir);
 

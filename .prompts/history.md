@@ -873,3 +873,13 @@ new one. You also mentioned other issues before (must and should fix). Commit an
 
 ---
 
+**Claude** (2026-02-08 12:18:58):
+Committed `ab35c74` resolves all UX issues, addressing must-fix elements like hover/focus states, loading/error styling, and header navigation, alongside should-fix improvements such as mobile responsiveness, empty state design, and accessibility enhancements with ARIA and `role="alert"`.
+
+---
+
+**Me** (2026-02-08 12:24:45):
+SO i have noticed 2 problems. I have to constantly review the frontend for user experience imporvements and possible bugs. I was thinking to add e2e tests. I would like to add e2e tests in a way that the agent can use them also to review the user experience and the user persona can use them to judge if the app works for them. How should we set this up? is it a good idea or should we do something different?
+
+---
+

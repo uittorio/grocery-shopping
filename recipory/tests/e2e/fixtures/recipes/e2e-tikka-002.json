@@ -1,0 +1,12 @@
+{
+  "id": "e2e-tikka-002",
+  "name": "Chicken Tikka Masala",
+  "ingredients": [
+    { "name": "chicken breast", "quantity": 500, "unit": "g" },
+    { "name": "tikka paste", "quantity": 3, "unit": "tbsp" },
+    { "name": "coconut milk", "quantity": 400, "unit": "ml" },
+    { "name": "rice", "quantity": 300, "unit": "g" }
+  ],
+  "createdAt": "2026-01-02T00:00:00.000Z",
+  "updatedAt": "2026-01-02T00:00:00.000Z"
+}

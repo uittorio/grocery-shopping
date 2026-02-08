@@ -5,11 +5,15 @@
 All commands run from `recipory/`.
 
 ```bash
-npm run dev        # Runs both Vite (http://localhost:5173) and Fastify server (http://localhost:3001) concurrently
-npm run server     # Fastify API server only
-npm test           # Vitest in watch mode
-npm run test:run   # Vitest single run (use for CI / verification)
-npm run build      # Production build (frontend only)
+npm run dev            # Runs both Vite (http://localhost:5173) and Fastify server (http://localhost:3001) concurrently
+npm run dev:test       # Same as dev, but uses isolated test data (data/test-recipes/)
+npm run server         # Fastify API server only
+npm test               # Vitest in watch mode
+npm run test:run       # Vitest single run (use for CI / verification)
+npm run test:e2e       # Playwright E2E tests (starts dev:test server automatically)
+npm run test:e2e:headed  # Playwright E2E tests in headed browser (visible)
+npm run screenshots    # Regenerate screenshots via Playwright
+npm run build          # Production build (frontend only)
 ```
 
 ## Stack
@@ -17,7 +21,7 @@ npm run build      # Production build (frontend only)
 - **UI**: React 19, Vite 7, React Router v7
 - **Backend**: Fastify (TypeScript, runs via tsx)
 - **Data Fetching**: TanStack Query v5
-- **Testing**: Vitest, @testing-library/react, @testing-library/user-event, jsdom, MSW
+- **Testing**: Vitest, @testing-library/react, @testing-library/user-event, jsdom, MSW, Playwright (E2E)
 - **Language**: TypeScript (ES modules)
 
 ## Architecture: Hexagonal
@@ -129,6 +133,7 @@ Test the system **from the user's perspective**, as close to production behaviou
 
 | Level | Location | What to test | Mocks allowed |
 |-------|----------|-------------|---------------|
+| E2E | `tests/e2e/` | Full stack: real browser, real server, real file storage | None -- real system |
 | UI integration | `tests/adapters/ui/` | Full user flows: render app, see data on page | HTTP only (via MSW) |
 | Domain unit (fallback) | `tests/domain/` | Only when behaviour can't be tested at integration level | None -- pure functions |
 
@@ -173,4 +178,34 @@ it('displays recipes when loaded', async () => {
 
   expect(await screen.findByText('Spaghetti Carbonara')).toBeInTheDocument();
 });
+```
+
+### E2E tests (Playwright)
+
+E2E tests run a real browser against the full stack (Vite + Fastify + file storage). They verify that the entire system works end-to-end.
+
+**Relationship to integration tests**: Integration tests (Vitest + MSW) are fast and mock the HTTP layer. E2E tests are slower but exercise the real server and file system. Both levels complement each other.
+
+**Test data strategy**:
+- Seed fixtures live in `tests/e2e/fixtures/recipes/`
+- Before each test, fixtures are copied to `data/test-recipes/`
+- The server reads from `data/test-recipes/` via `RECIPE_DATA_DIR` env var
+- This gives each test a clean, predictable starting state
+
+**Screenshot capture**: Tests capture screenshots to `screenshots/`. This directory is gitignored. Run `npm run screenshots` to regenerate all screenshots.
+
+**Config**: `playwright.config.ts` at the project root. Only Chromium is configured (lightweight for Raspberry Pi).
+
+**Structure**:
+```
+tests/e2e/
+├── fixtures/
+│   └── recipes/        # Seed data copied before each test
+│       ├── index.json
+│       ├── e2e-carbonara-001.json
+│       └── e2e-tikka-002.json
+├── helpers/
+│   └── resetTestData.ts  # Copies fixtures to data/test-recipes/
+├── recipes.spec.ts     # Core CRUD flows + screenshots
+└── mobile.spec.ts      # Mobile viewport tests + screenshots
 ```
