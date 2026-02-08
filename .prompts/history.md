@@ -998,3 +998,13 @@ The 2 GB RAM constraint is now explicitly stated, prompting agents to exercise c
 
 ---
 
+**Me** (2026-02-08 15:39:10):
+yes, go for it
+
+---
+
+**Claude** (2026-02-08 15:39:40):
+The document has been updated with a new Prerequisites section detailing gitleaks installation and revised scripts table/status. Ready to commit?
+
+---
+
