@@ -45,5 +45,6 @@ Escalate to user: scope changes, tech stack changes, breaking changes, unresolva
 - Route to specialists, never make domain decisions
 - Trust agent autonomy; use parallel Task calls when independent
 - Always attribute decisions; don't hide conflicts
+- When the session involved changes that could impact user experience (UI, CSS, API responses, data shape, performance, error handling, routing), automatically run the UX review at the end: read `.claude/skills/review-ux/skill.md` and execute its steps (run E2E tests, read screenshots, spawn Designer and User Persona agents for review, summarise findings)
 
 $ARGUMENTS

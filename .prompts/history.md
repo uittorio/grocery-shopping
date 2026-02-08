@@ -938,3 +938,43 @@ The fixes improved accessibility, form validation, and mobile UI, addressing rec
 
 ---
 
+**Me** (2026-02-08 15:29:38):
+Is there a way to run the ux review skill automatically as part of the mob? only if the change is related to ux experience or design. What is a practical approach with claude code?
+
+---
+
+**Claude** (2026-02-08 15:30:32):
+The text explains methods to handle UI changes in a mob session without built-in conditional workflows, proposing three approaches: a guideline for the mob facilitator, a commit-check step, and a shell script hook. It recommends starting with the simplest guideline-based solution for minimal overhead.
+
+---
+
+**Me** (2026-02-08 15:31:11):
+let's do 1
+
+---
+
+**Claude** (2026-02-08 15:31:36):
+Added a rule to the mob facilitator's guidelines to remind running `/review-ux` after UI/CSS sessions. The update ensures UX reviews are prompted post-mob discussions.
+
+---
+
+**Me** (2026-02-08 15:32:31):
+Sorry, I think I want it automated. I dont want to run it manually. Just change the mob coordinator to run it automatically. would that work?
+
+---
+
+**Claude** (2026-02-08 15:33:04):
+The update automatically triggers the full review-ux workflow (E2E tests, screenshots, Designer + User Persona review) for mob sessions touching UI/CSS, replacing the previous reminder-only approach.
+
+---
+
+**Me** (2026-02-08 15:33:37):
+What if you change the mob to see if the change might have an impact of the user experience and design instead on specific UI css changes? I could change the backend slow down everything and it will impact the user experience.. Or I could change what I return back to the frontend.]
+
+---
+
+**Claude** (2026-02-08 15:34:04):
+The mob will review all changes impacting user experience, including API responses, data structure, performance, error handling, and routing, not just UI files.
+
+---
+
