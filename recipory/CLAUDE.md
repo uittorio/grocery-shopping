@@ -1,5 +1,13 @@
 # Recipory -- Technical Guide
 
+## Current Status
+
+**Increments 1–4 complete. Increment 5 (Weekly Shopping Flow) is next.**
+
+Implemented: Recipe Library, Add/Edit/Delete Recipe, Fastify backend, file-based storage, integration tests, E2E tests with screenshots.
+
+Not yet implemented (planned for Increment 5): "Plan Shopping" button, recipe selection screen, shopping list screen, copy-to-clipboard, search bar. See `discovery/recipory/DELIVERY_PLAN.md` for full scope.
+
 ## Commands
 
 All commands run from `recipory/`.
