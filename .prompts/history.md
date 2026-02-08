@@ -763,3 +763,23 @@ I will check if it works. Ensuring it functions properly.
 
 ---
 
+**Me** (2026-02-08 08:31:41):
+I want to know test the mcp knip and see how it works. Please add another random recipe to the json
+
+---
+
+**Claude** (2026-02-08 08:32:19):
+Chicken Tikka Masala has been added. Knip will now be run to generate a report.
+
+---
+
+**Me** (2026-02-08 08:33:48):
+Yes. How can I automate this processs with claude? I want to ensure that the code is clean up
+
+---
+
+**Claude** (2026-02-08 08:35:45):
+The `/commit` skill now uses Knip to automatically clean up unused files, exports, and dependencies, confirms deletions for WIP files, and includes cleanup details in commit messages. Added tools like `Edit`, `Write`, and `mcp__knip__knip-run` enable the cleanup process.
+
+---
+

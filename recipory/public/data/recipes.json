@@ -9,5 +9,18 @@
     ],
     "createdAt": "2026-02-07T00:00:00.000Z",
     "updatedAt": "2026-02-07T00:00:00.000Z"
+  },
+  {
+    "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+    "name": "Chicken Tikka Masala",
+    "ingredients": [
+      { "name": "chicken breast", "quantity": 500, "unit": "g" },
+      { "name": "yoghurt", "quantity": 150, "unit": "ml" },
+      { "name": "tikka masala paste", "quantity": 3, "unit": "tbsp" },
+      { "name": "chopped tomatoes", "quantity": 400, "unit": "g" },
+      { "name": "basmati rice", "quantity": 300, "unit": "g" }
+    ],
+    "createdAt": "2026-02-08T00:00:00.000Z",
+    "updatedAt": "2026-02-08T00:00:00.000Z"
   }
 ]
