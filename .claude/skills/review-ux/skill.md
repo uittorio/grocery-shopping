@@ -6,7 +6,7 @@ allowed-tools: Bash, Read, Glob, Grep, Task
 
 Review the app's user experience by generating fresh screenshots and having agents evaluate them:
 
-1. Run E2E tests with screenshot capture: `npm run test:e2e --prefix recipory`
+1. Run E2E tests with screenshot capture: `npm run test:e2e`
 2. If any E2E tests fail, report the failures and stop
 3. Read all generated screenshots from `recipory/screenshots/` using the Read tool (they are image files)
 4. Ask the **Designer** agent (via Task tool, subagent_type: designer) to review the screenshots for:

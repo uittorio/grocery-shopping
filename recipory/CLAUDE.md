@@ -6,10 +6,9 @@ All commands run from `recipory/`.
 
 ```bash
 npm run dev            # Runs both Vite (http://localhost:5173) and Fastify server (http://localhost:3001) concurrently
-npm run dev:test       # Same as dev, but uses isolated test data (data/test-recipes/)
 npm run server         # Fastify API server only
 npm test               # Vitest in watch mode
-npm run test:run       # Vitest single run (use for CI / verification)
+npm run test:run:once       # Vitest single run (use for CI / verification)
 npm run test:e2e       # Playwright E2E tests (starts dev:test server automatically)
 npm run test:e2e:headed  # Playwright E2E tests in headed browser (visible)
 npm run screenshots    # Regenerate screenshots via Playwright

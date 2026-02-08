@@ -17,7 +17,7 @@ npm run dev       # http://localhost:5173
 | `npm run dev` | Start dev server |
 | `npm run build` | Production build |
 | `npm test` | Run tests (watch mode) |
-| `npm run test:run` | Run tests once (CI) |
+| `npm run test:run:once` | Run tests once (CI) |
 
 ## Current Status
 
