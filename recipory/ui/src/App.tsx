@@ -1,8 +1,8 @@
 import { Routes, Route, Link, useParams } from 'react-router';
-import { useRecipes } from './hooks/useRecipes.js';
-import { useRecipe } from './hooks/useRecipe.js';
-import { RecipeList } from './components/RecipeList.js';
-import { RecipeForm } from './components/RecipeForm.js';
+import { useRecipes } from './recipes/useRecipes.js';
+import { useRecipe } from './recipes/useRecipe.js';
+import { RecipeList } from './recipes/RecipeList.js';
+import { RecipeForm } from './recipes/RecipeForm.js';
 import './App.css';
 
 function RecipeLibrary() {

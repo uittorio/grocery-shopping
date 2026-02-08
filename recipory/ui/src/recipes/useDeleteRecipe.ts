@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { HttpRecipeWriter } from '../../http/httpRecipeWriter.js';
+import { HttpRecipeWriter } from '../adapters/httpRecipeWriter.js';
 
 const recipeWriter = new HttpRecipeWriter();
 

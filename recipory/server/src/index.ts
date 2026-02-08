@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { FileRecipeRepository } from '../adapters/server/fileRecipeRepository.js';
+import { FileRecipeRepository } from './adapters/fileRecipeRepository.js';
 import { recipeRoutes } from './routes/recipes.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

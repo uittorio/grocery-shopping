@@ -1,10 +1,8 @@
 import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Recipe } from '../../domain/recipe.js';
-import type { RecipeReader } from '../../domain/ports/recipeReader.js';
-import type { RecipeWriter } from '../../domain/ports/recipeWriter.js';
+import type { Recipe } from '../../../shared/recipe.js';
 
-export class FileRecipeRepository implements RecipeReader, RecipeWriter {
+export class FileRecipeRepository {
   constructor(private readonly dataDir: string) {}
 
   async findAll(): Promise<Recipe[]> {

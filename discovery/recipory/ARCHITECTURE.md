@@ -47,56 +47,56 @@
 
 ```
 recipory/
-  src/
-    domain/                  # Core business logic (pure, no dependencies)
-      recipe.js              # Recipe entity and validation
-      shoppingList.js        # Shopping list aggregation logic
-      ports/
-        recipeRepository.js  # Repository interface
+  shared/                        # Contract: types + validation only
+    recipe.ts                    # Recipe, Ingredient types, validation, ID generation
 
-    application/             # Use cases / orchestration
-      createRecipe.js
-      listRecipes.js
-      searchRecipes.js
-      getRecipe.js
-      deleteRecipe.js
-      generateShoppingList.js
+  ui/
+    src/
+      adapters/                  # HTTP adapters (browser-side, calls API)
+        httpRecipeReader.ts
+        httpRecipeWriter.ts
+      recipes/                   # Feature folder (components, hooks, ports)
+        ports/
+          recipeReader.ts        # Read-only operations interface
+          recipeWriter.ts        # Write operations interface
+        RecipeList.tsx
+        RecipeForm.tsx
+        useRecipes.ts
+        useRecipe.ts
+        useCreateRecipe.ts
+        useUpdateRecipe.ts
+        useDeleteRecipe.ts
+      App.tsx
+      App.css
+      main.tsx                   # Composition root
 
-    adapters/                # External interfaces
-      storage/               # JSON file persistence
-        jsonRecipeRepository.js
-      ui/                    # React frontend
-        components/
-          RecipeList.jsx
-          RecipeDetail.jsx
-          RecipeForm.jsx
-          WeeklyPlanner.jsx
-          ShoppingList.jsx
-        App.jsx
-        index.jsx
+  server/
+    src/
+      adapters/
+        fileRecipeRepository.ts  # Reads/writes JSON files
+      routes/
+        recipes.ts               # Recipe CRUD route handlers
+      index.ts                   # Server setup + start
 
-    infrastructure/          # Setup, wiring, configuration
-      container.js           # Dependency injection / wiring
-
-  data/                      # JSON storage location
+  data/                          # JSON storage location
     recipes/
-      *.json                 # One file per recipe
+      *.json                     # One file per recipe
 
   tests/
-    domain/
-    application/
-    adapters/
+    recipes/                     # UI integration tests
+    mocks/                       # MSW handlers
+    e2e/                         # Playwright E2E tests
 
   package.json
 ```
 
 ### What goes where
 
-- **domain/**: Pure business logic. No I/O, no React, no file system. Contains entities, domain services, and port definitions.
-- **application/**: Use cases that orchestrate domain logic. Each file is one user action. These depend on domain and call through ports.
-- **adapters/storage/**: JSON file repository implementing the RecipeRepository port.
-- **adapters/ui/**: React components consuming application use cases.
-- **infrastructure/**: Wires adapters to ports, creates instances, exposes to UI.
+- **shared/**: Pure types and validation functions. No I/O, no React, no file system. Shared between UI and server.
+- **ui/src/recipes/**: Feature folder containing React components, hooks, and port interfaces (what the UI needs from its adapters).
+- **ui/src/adapters/**: HTTP adapters implementing UI port interfaces.
+- **server/src/adapters/**: Server-side adapters (file-based storage) using shared types directly.
+- **server/src/routes/**: Fastify route handlers.
 - **data/**: One JSON file per recipe. Simple, inspectable, version-control friendly.
 
 ---

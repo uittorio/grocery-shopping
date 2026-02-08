@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { HttpRecipeWriter } from '../../http/httpRecipeWriter.js';
-import type { Recipe } from '../../../domain/recipe.js';
+import { HttpRecipeWriter } from '../adapters/httpRecipeWriter.js';
+import type { Recipe } from '../../../shared/recipe.js';
 
 const recipeWriter = new HttpRecipeWriter();
 

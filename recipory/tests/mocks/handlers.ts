@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import type { Recipe } from '../../src/domain/recipe.js';
+import type { Recipe } from '../../shared/recipe.js';
 
 const mockRecipes: Recipe[] = [
   {

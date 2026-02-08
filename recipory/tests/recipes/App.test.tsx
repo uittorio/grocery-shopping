@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { App } from '../../../src/adapters/ui/App.js';
+import { App } from '../../ui/src/App.js';
 
 function renderApp(initialRoute = '/') {
   const queryClient = new QueryClient({

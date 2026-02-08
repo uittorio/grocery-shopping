@@ -4,11 +4,11 @@ import {
   validateRecipe,
   hasValidationErrors,
   generateRecipeId,
-} from '../../../domain/recipe.js';
-import type { Recipe, RecipeValidationErrors } from '../../../domain/recipe.js';
-import { useCreateRecipe } from '../hooks/useCreateRecipe.js';
-import { useUpdateRecipe } from '../hooks/useUpdateRecipe.js';
-import { useDeleteRecipe } from '../hooks/useDeleteRecipe.js';
+} from '../../../shared/recipe.js';
+import type { Recipe, RecipeValidationErrors } from '../../../shared/recipe.js';
+import { useCreateRecipe } from './useCreateRecipe.js';
+import { useUpdateRecipe } from './useUpdateRecipe.js';
+import { useDeleteRecipe } from './useDeleteRecipe.js';
 
 interface IngredientFormRow {
   name: string;

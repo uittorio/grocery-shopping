@@ -1028,3 +1028,38 @@ The setup includes fnm installed via Homebrew, a pinned `.node-version` file, up
 
 ---
 
+**Me** (2026-02-08 21:03:30):
+ask the mob what they think about the folder structure for recipory, especially the src folder.
+
+---
+
+**Me** (2026-02-08 21:22:43):
+I dont like the fact that the ui and server are mixed up. I understand that there will share same types but the way its built now it has a clear distinction. In the future we might add some more functionality with ai suggestsions and so on. I think we should split them up. We could create a contract folder between ui and server. Lets maybe follow a simpler hexagonal architecture, Ask the mob
+
+---
+
+**Claude** (2026-02-08 21:25:20):
+The domain layer is solid with clean architecture and testability, but structural ambiguities and UI scalability issues require attention. Prioritize reorganizing UI components by feature, renaming adapters/server to persistence, and planning for an application layer as complexity grows.
+
+---
+
+**Me** (2026-02-08 21:29:54):
+lets go with option 3 but we dont name api/ componetns and hooks we split them by featres in the ui. it will be recipes. server doesnt have much yet. tests should follow the folders. in Shared we dont keep ports, only some shared types. the ui will have a folder called ui/src/adapters, the ports will be inside the feature. let me know if thats clear. We also have to update all the documentations and various scripts etc.
+
+---
+
+**Me** (2026-02-08 21:31:38):
+yes this is fine.. we dont need tests/shared and tests/server because we have no tests for the backend. Lets also rename the ui tests to be based on the feature, it doesnt matter that the ui tests renders App, it is testing recipes
+
+---
+
+**Me** (2026-02-08 21:41:09):
+it wask stuck I think. try again
+
+---
+
+**Claude** (2026-02-08 21:54:09):
+Final verification to ensure code compiles and tests pass. Confirming all components function correctly.
+
+---
+

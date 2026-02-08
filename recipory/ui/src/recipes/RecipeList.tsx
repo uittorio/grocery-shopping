@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import type { Recipe } from '../../../domain/recipe.js';
+import type { Recipe } from '../../../shared/recipe.js';
 
 type RecipeListProps = {
   recipes: Recipe[];

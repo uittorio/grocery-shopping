@@ -31,63 +31,61 @@ npm run build          # Production build (frontend only)
 - **Testing**: Vitest, @testing-library/react, @testing-library/user-event, jsdom, MSW, Playwright (E2E)
 - **Language**: TypeScript (ES modules)
 
-## Architecture: Hexagonal
+## Architecture
 
-The codebase follows hexagonal (ports & adapters) architecture. The domain has zero dependencies on frameworks or I/O.
+The codebase is split into three top-level folders: `shared/` (contract types), `ui/` (React frontend), and `server/` (Fastify backend). The HTTP API is the boundary between UI and server. Ports are a UI concern (they define what the UI needs); the server just uses the shared `Recipe` type.
 
 ```
-src/
-├── domain/           # Pure business logic, no imports from outside domain
-│   ├── recipe.ts     # Recipe/Ingredient types, validation, ID generation
-│   └── ports/        # Interfaces that adapters must implement
-│       ├── recipeReader.ts    # Read-only operations
-│       └── recipeWriter.ts    # Write operations
-│
-├── adapters/         # Implementations of ports + UI
-│   ├── http/         # HTTP adapters (browser-side, calls API)
-│   │   ├── httpRecipeReader.ts  # Implements RecipeReader
-│   │   └── httpRecipeWriter.ts  # Implements RecipeWriter
-│   ├── server/       # Server-side adapters
-│   │   └── fileRecipeRepository.ts  # Reads/writes JSON files (implements RecipeReader + RecipeWriter)
-│   └── ui/           # React components
-│       ├── App.tsx
-│       ├── hooks/
-│       │   ├── useRecipes.ts
-│       │   ├── useRecipe.ts
-│       │   ├── useCreateRecipe.ts
-│       │   ├── useUpdateRecipe.ts
-│       │   └── useDeleteRecipe.ts
-│       └── components/
-│           ├── RecipeList.tsx
-│           └── RecipeForm.tsx
-│
-├── server/           # Fastify server
-│   ├── index.ts      # Server setup + start
-│   └── routes/
-│       └── recipes.ts  # Recipe CRUD route handlers
-│
-└── main.tsx          # Composition root: wires BrowserRouter, QueryClientProvider, and App
+shared/                          # Contract: types + validation only
+└── recipe.ts                    # Recipe, Ingredient, RecipeValidationErrors, validateRecipe, hasValidationErrors, generateRecipeId
+
+ui/
+└── src/
+    ├── adapters/                # HTTP adapters (browser-side, calls API)
+    │   ├── httpRecipeReader.ts  # Implements RecipeReader
+    │   └── httpRecipeWriter.ts  # Implements RecipeWriter
+    ├── recipes/                 # Feature folder (components, hooks, ports)
+    │   ├── ports/
+    │   │   ├── recipeReader.ts  # Read-only operations interface
+    │   │   └── recipeWriter.ts  # Write operations interface
+    │   ├── RecipeList.tsx
+    │   ├── RecipeForm.tsx
+    │   ├── useRecipes.ts
+    │   ├── useRecipe.ts
+    │   ├── useCreateRecipe.ts
+    │   ├── useUpdateRecipe.ts
+    │   └── useDeleteRecipe.ts
+    ├── App.tsx
+    ├── App.css
+    └── main.tsx                 # Composition root
+
+server/
+└── src/
+    ├── adapters/
+    │   └── fileRecipeRepository.ts  # Reads/writes JSON files
+    ├── routes/
+    │   └── recipes.ts               # Recipe CRUD route handlers
+    └── index.ts                     # Server setup + start
 
 data/
-└── recipes/          # JSON file storage (server reads/writes here)
-    ├── index.json    # Array of recipe IDs
-    └── {id}.json     # One file per recipe
+└── recipes/                     # JSON file storage (server reads/writes here)
+    ├── index.json               # Array of recipe IDs
+    └── {id}.json                # One file per recipe
 ```
 
 ### Rules
 
-- **Domain** depends on nothing. No imports from `adapters/`, `application/`, or libraries.
-- **Application** depends on domain only. Receives adapters via dependency injection.
-- **Adapters** depend on domain ports. They implement the interfaces defined in `domain/ports/`.
+- **Shared** contains only types and pure validation functions. No imports from `ui/` or `server/`.
+- **UI** imports from `shared/` for types. Ports live inside the feature folder (they define what the UI needs from its adapters).
+- **Server** imports from `shared/` for the `Recipe` type. No dependency on UI ports -- the HTTP API is the real contract.
 - **main.tsx** is the composition root -- the only place that knows about all layers.
 
 ### Patterns
 
-- **Entities are factory functions**: `createRecipe(data)` validates and returns a typed plain object. No classes.
-- **Ports are TypeScript interfaces**: e.g. `interface RecipeRepository` defines the contract.
-  - **Interface segregation**: Read-only operations live in `RecipeReader`, write operations in `RecipeWriter`. The full `RecipeRepository` extends both.
-- **Adapters implement ports**: e.g. `FileRecipeRepository implements RecipeReader, RecipeWriter`, `HttpRecipeReader implements RecipeReader`.
-- **Use cases are factory functions**: `createListRecipes(repo)` returns a typed async function.
+- **Ports are TypeScript interfaces** (UI concern): e.g. `RecipeReader`, `RecipeWriter` define what the UI adapters must provide.
+  - **Interface segregation**: Read-only operations live in `RecipeReader`, write operations in `RecipeWriter`.
+- **HTTP adapters implement ports**: e.g. `HttpRecipeReader implements RecipeReader`.
+- **Server adapters use shared types directly**: `FileRecipeRepository` uses the `Recipe` type from `shared/` without implementing UI port interfaces.
 - **UI uses TanStack Query hooks**: components fetch data via `useRecipes()` hook, mutations via `useCreateRecipe()`.
 
 ### API Endpoints
@@ -141,12 +139,12 @@ Test the system **from the user's perspective**, as close to production behaviou
 | Level | Location | What to test | Mocks allowed |
 |-------|----------|-------------|---------------|
 | E2E | `tests/e2e/` | Full stack: real browser, real server, real file storage | None -- real system |
-| UI integration | `tests/adapters/ui/` | Full user flows: render app, see data on page | HTTP only (via MSW) |
-| Domain unit (fallback) | `tests/domain/` | Only when behaviour can't be tested at integration level | None -- pure functions |
+| UI integration | `tests/recipes/` | Full user flows: render app, see data on page | HTTP only (via MSW) |
+| Domain unit (fallback) | `tests/shared/` | Only when behaviour can't be tested at integration level | None -- pure functions |
 
 ### Conventions
 
-- Mirror `src/` structure under `tests/`
+- Organise tests by feature under `tests/` (e.g. `tests/recipes/`)
 - Use `describe` for the unit, nested `describe` for the method/behaviour, `it` for each case.
 - Import from vitest explicitly: `import { describe, it, expect } from 'vitest'`
 - No `beforeEach` for simple data setup -- inline it in each test for readability.
@@ -168,7 +166,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { App } from '../../../src/adapters/ui/App.js';
+import { App } from '../../ui/src/App.js';
 
 it('displays recipes when loaded', async () => {
   const queryClient = new QueryClient({

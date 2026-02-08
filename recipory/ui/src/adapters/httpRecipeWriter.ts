@@ -1,5 +1,5 @@
-import type { Recipe } from '../../domain/recipe.js';
-import type { RecipeWriter } from '../../domain/ports/recipeWriter.js';
+import type { Recipe } from '../../../shared/recipe.js';
+import type { RecipeWriter } from '../recipes/ports/recipeWriter.js';
 
 export class HttpRecipeWriter implements RecipeWriter {
   async create(recipe: Recipe): Promise<Recipe> {

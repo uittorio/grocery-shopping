@@ -1,5 +1,5 @@
-import type { Recipe } from '../../domain/recipe.js';
-import type { RecipeReader } from '../../domain/ports/recipeReader.js';
+import type { Recipe } from '../../../shared/recipe.js';
+import type { RecipeReader } from '../recipes/ports/recipeReader.js';
 
 export class HttpRecipeReader implements RecipeReader {
   async findAll(): Promise<Recipe[]> {
