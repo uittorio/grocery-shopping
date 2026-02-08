@@ -753,3 +753,13 @@ The history scan found 4 instances of the local-user-path rule in historical com
 
 ---
 
+**Me** (2026-02-08 08:28:44):
+Should we add the git config hook as part of the README? Also, is it worth having it as part of an init command to ensure it is used? The same way users do it fo husky
+
+---
+
+**Claude** (2026-02-08 08:29:32):
+I will check if it works. Ensuring it functions properly.
+
+---
+
