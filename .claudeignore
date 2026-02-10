@@ -1,0 +1,6 @@
+# Prompt history log — written by hooks, never needed in context
+.prompts/
+
+# Generated files
+recipory/screenshots/
+recipory/test-results/

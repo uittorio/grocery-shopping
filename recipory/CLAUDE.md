@@ -159,32 +159,6 @@ MSW (Mock Service Worker) intercepts HTTP requests at the network level. Tests m
 - **Server** setup in `tests/mocks/server.ts` -- creates the MSW server instance
 - **Setup file** at `tests/setup.ts` -- starts/stops the server around all tests, resets mock data between tests
 
-### Example test
-
-```typescript
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { App } from '../../ui/App.js';
-
-it('displays recipes when loaded', async () => {
-  const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
-  });
-
-  render(
-    <MemoryRouter initialEntries={['/']}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </MemoryRouter>
-  );
-
-  expect(await screen.findByText('Spaghetti Carbonara')).toBeInTheDocument();
-});
-```
-
 ### E2E tests (Playwright)
 
 E2E tests run a real browser against the full stack (Vite + Fastify + file storage). They verify that the entire system works end-to-end.
