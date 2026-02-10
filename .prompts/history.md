@@ -1143,3 +1143,28 @@ Verifying line count reduction and ensuring all components still compile correct
 
 ---
 
+**Me** (2026-02-10 17:56:48):
+The recipe list seems a bit empty. Ask the mob what they think.
+
+---
+
+**Me** (2026-02-10 18:07:43):
+I want to plan the next feature that is about the weekly plan. Now this requires some details and some inputs from me before asking the mob opinion. The idea of the weekly plan is that I can plan my week, starting from any day of the week. I want to able to select recipes, if a recipe for example serves 4 meals it will occupy 2 meals of the day because our family is mainly composed by 2 adults and one child. All of this should be configurable but it can be easily hardcoded. I want to be able to easily visualise that I still need to select a recipe for the weekly plan. For example I can see that Monday/Tuesday and Thursday are covered but not Wednesday because I havent decided yet what to eat. Also bear in mind that cooking one meal for 4 people might means that half of it used a dinner and half of it is used a lunch the day after. Do you have any questions before we try to ask the group what they think? In summary, plan the week, select the recipes for the week, view a summary that I can easily use to do grocery shopping.
+
+---
+
+**Claude** (2026-02-10 18:17:41):
+The plan includes configurable meal slots (Lunch/Dinner, 14/week) with flexible family portion settings, per-recipe serving declarations, and leftover carryover to next meals. It also features a flexible week start, per-recipe shopping breakdowns, and a summary view for gap detection.
+
+---
+
+**Me** (2026-02-10 18:31:11):
+Week default start should be configurable, default to 2 portions, auto place, require adding, one current plan, only planned meals.
+
+---
+
+**Claude** (2026-02-10 18:32:39):
+Updating the delivery plan to reflect the refined Increment 5 design.
+
+---
+

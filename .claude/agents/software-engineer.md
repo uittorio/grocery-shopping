@@ -2,7 +2,7 @@
 name: software-engineer
 description: Software Engineer. Invoke for full-stack implementation, TDD, API design, database schemas, third-party integration, and code quality.
 tools: Read, Glob, Grep, Write, Edit, Bash, Task
-model: opus
+model: sonnet
 icon: 💻
 ---
 

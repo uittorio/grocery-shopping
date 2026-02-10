@@ -1,8 +1,8 @@
 # Recipory Incremental Delivery Plan
 
-**Version**: 2.0
-**Date**: 2026-02-08
-**Status**: In Progress (Increments 1-2 complete)
+**Version**: 3.0
+**Date**: 2026-02-10
+**Status**: In Progress (Increments 1-4 complete)
 
 ## Overview
 
@@ -118,36 +118,88 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 
 ---
 
-## Increment 5: Weekly Shopping Flow
+## Increment 5A: Recipe Servings (Foundation)
 
 **What it delivers (user-visible)**:
-- "Plan Shopping" button on Recipe Library
-- Screen 3a: Select recipes with checkboxes, see selection summary
-- Screen 3b: Combined shopping list from selected recipes
-- "Copy to Clipboard" copies plain text list
-- Remove ingredients before copying
+- Add/Edit Recipe form has a "Servings" field (required, e.g. "serves 4")
+- Recipe cards show servings count
+- Existing recipes require servings to be added before they can be used in meal planning
 
 **What it builds (technical)**:
-- Domain: Shopping list aggregation logic (no quantity aggregation in MVP)
-- UI: WeeklyPlanner component (recipe selection with checkboxes)
-- UI: ShoppingList component (ingredient list with remove buttons)
-- UI: Clipboard API integration
-- Integration tests for the full shopping flow
+- Recipe schema: add `servings: number` field
+- Update `validateRecipe` to require servings > 0
+- Update RecipeForm with servings input
+- Update RecipeList cards to display servings
+- Migration: just change the existing JSON files to add servings field
 
 **Acceptance criteria**:
-- User selects 2 recipes, clicks "Generate Shopping List"
-- Sees combined ingredient list (duplicates not merged)
-- Removes one ingredient, clicks "Copy to Clipboard"
-- Pastes into Notes app — plain text list appears
-- Confirmation toast shows "Copied!"
-- Integration tests pass
+- User creates a new recipe — servings field is required
+- User edits an existing recipe — must add servings before saving
+- Recipe cards show "Serves 4" (or similar)
+- Validation error if servings is missing or zero
+- All existing tests updated and passing
 
-**Rationale**:
-- *Product Owner*: Core value prop delivered — plan weekly shopping
-- *Designer*: Completes Flow 2 — both screens 3a and 3b needed together
-- *User Persona*: "This is what I came for — I can plan my shopping now"
-- *Architect*: Validates domain logic for shopping list aggregation
-- *Programmer*: Shopping list is transient state; clean separation
+---
+
+## Increment 5B: Weekly Meal Plan
+
+**What it delivers (user-visible)**:
+- "Plan This Week" button on Recipe Library
+- Weekly Plan grid: 7 days × 2 meals (Lunch + Dinner) = 14 slots
+- Week starts on a configurable day (default: Monday)
+- Tap empty slot → Recipe Selector (list of recipes with servings shown)
+- Leftover auto-placement: a 4-serving recipe with family size 2 fills 2 consecutive slots (e.g. Thu Dinner + Fri Lunch), marked as "leftover"
+- Family size configurable (default: 2 portions/meal)
+- Clear gap visibility: unfilled slots are visually distinct
+- Plan persists across page reloads (one active plan at a time)
+
+**What it builds (technical)**:
+- Shared types: `MealType`, `MealSlot`, `WeeklyPlan`, `PlanSettings`
+- Domain logic: `calculateMealSlots(recipe, startSlot, familySize)` — pure function in `shared/`
+- Port: `PlanReader` + `PlanWriter` interfaces
+- Adapter: `HttpPlanReader` + `HttpPlanWriter` (calls API)
+- Server: `FilePlanRepository` — stores plan at `data/plans/current.json`, settings at `data/plans/settings.json`
+- Server routes: `/api/plan`, `/api/plan/settings`
+- UI components: `WeeklyPlanGrid`, `MealSlotCard`, `RecipeSelector`, `PlanSettings`
+- Routing: `/plan` for the weekly plan view
+
+**Acceptance criteria**:
+- User taps "Plan This Week" → sees 14 empty meal slots grouped by day
+- User taps empty Thursday Dinner slot → sees recipe selector with servings shown
+- User selects "Carbonara (serves 4)" with family size 2 → fills Thursday Dinner + Friday Lunch
+- Friday Lunch shows "Carbonara (leftover)"
+- User can remove a recipe from a slot (also removes its leftover slots)
+- Empty slots are visually obvious (gap detection at a glance)
+- User refreshes → plan persists
+- User can change week start day and family size in settings
+- Integration tests and E2E tests pass
+
+**Design guidance (mobile-first)**:
+- Single column, grouped by day (day header → lunch slot → dinner slot)
+- Empty slot: dashed border, "+ Add Recipe" text
+- Filled slot: recipe name, "leftover" badge if applicable
+- Settings accessible via gear icon in plan header
+
+---
+
+## Increment 5C: Shopping Summary
+
+**What it delivers (user-visible)**:
+- "View Shopping List" button on Weekly Plan
+- Shopping Summary screen: ingredients grouped by recipe (not aggregated)
+- Each recipe section shows which meals it covers (e.g. "Carbonara: Thu Dinner, Fri Lunch")
+- Only shows recipes from filled slots (empty slots ignored)
+
+**What it builds (technical)**:
+- Domain logic: `generateShoppingList(plan, recipes)` — groups ingredients by recipe
+- UI component: `ShoppingSummary` with recipe sections
+- Routing: `/plan/shopping`
+
+**Acceptance criteria**:
+- User with 3 recipes planned taps "View Shopping List"
+- Sees ingredients grouped by recipe, each with day/meal label
+- Can navigate back to plan to adjust
+- Integration tests pass
 
 ---
 
@@ -157,20 +209,36 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 1. Increment 1 before 2 (need structure before data loading)
 2. Increment 2 before 3 (need data loading before CRUD)
 3. Increment 3 before 4 (need create before edit)
-4. Increment 3 before 5 (need recipes before shopping list)
+4. Increment 5A before 5B (need servings before meal planning)
+5. Increment 5B before 5C (need plan before shopping list)
 
 ### Parallel opportunities:
-- Increments 4 and 5 can be built in parallel after Increment 3
+- Increment 4 and 5A can be built in parallel after Increment 3
 
 ---
 
+## Design Decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Meal slots per day | Lunch + Dinner (2) | Breakfast deferred — design allows adding it later |
+| Week start day | Configurable (default Monday) | Families plan differently |
+| Family size | Configurable (default 2 portions/meal) | Varies by family; drives leftover logic |
+| Leftover placement | Auto-consecutive | Thu Dinner → Fri Lunch is natural; user can remove/replace |
+| Existing recipes | Require adding servings | Leftover logic needs accurate numbers |
+| Plan persistence | One current plan | Simpler MVP; multi-plan support deferred |
+| Shopping list format | Per-recipe breakdown | User wants to see what's needed for each dish |
+
 ## Out of Scope (Explicitly Deferred)
 
-- Search recipes (not critical for MVP — add after Increment 5)
-- Ingredient aggregation (DESIGN_SPEC defers to v1.1)
+- Breakfast meal slot
+- Ingredient aggregation across recipes
+- Plan templates / plan history
+- Drag-and-drop slot rearrangement
+- Copy-to-clipboard (add when Tesco integration is ready)
+- Search recipes
 - Recipe tags or categories
 - Cooking instructions
-- Servings tracking
 
 ---
 
@@ -178,10 +246,9 @@ This plan delivers Recipory in 5 small, shippable increments. Each increment is 
 
 | Agent | Contribution |
 |-------|-------------|
-| Product Owner | Feature ordering for early user value, acceptance criteria |
-| Architect | Hexagonal architecture validation strategy, adapter sequencing |
-| Programmer | Vertical slice approach, integration-first test strategy, increment sizing |
-| Designer | Empty states, accessibility requirements, flow completion dependencies |
-| User Persona | User value validation, confidence-building moments |
-
-No conflicts identified. All agents aligned on starting with recipe library, validating architecture early, and keeping increments small.
+| Product Owner | Increment breakdown (5A/5B/5C), acceptance criteria, scope decisions |
+| Architect | Data model, leftover calculation as pure domain logic, persistence strategy |
+| Designer | Mobile-first grid layout, gap visibility, leftover badge, settings UX |
+| Software Engineer | Vertical slice approach, integration-first test strategy |
+| User Persona | Leftover logic validation, per-recipe shopping grouping, quick-scan requirements |
+| Mob Facilitator | Cross-agent alignment, open question resolution |
