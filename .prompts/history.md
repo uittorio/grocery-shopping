@@ -1093,3 +1093,33 @@ The script's inline `RECIPE_DATA_DIR=data/recipes` overrides Playwright's enviro
 
 ---
 
+**Me** (2026-02-10 17:26:23):
+I've noticed that there is an issue sometimes when claude code operates. command not found: __zoxide_z. What is the actual problem?
+
+---
+
+**Claude** (2026-02-10 17:26:56):
+Zoxide's `cd` alias fails in non-interactive shells due to incomplete initialization. The fix is to load zoxide only in interactive shells using `[[ $- == *i* ]] && eval "$(zoxide init zsh)"`.
+
+---
+
+**Me** (2026-02-10 17:27:39):
+explain that command
+
+---
+
+**Claude** (2026-02-10 17:27:56):
+The issue arises because zoxide's functions aren't loaded in non-interactive shells, causing `cd` to fail silently. The fix is to conditionally load zoxide only in interactive shells using `[[ $- == *i* ]] && eval "$(zoxide init zsh)"`.
+
+---
+
+**Me** (2026-02-10 17:28:02):
+I like it. WHere do we make that change?
+
+---
+
+**Claude** (2026-02-10 17:29:14):
+Lines 124–126 must be guarded to ensure security.
+
+---
+
