@@ -1208,3 +1208,23 @@ All tests have passed. Proceed to build and implement an end-to-end system.
 
 ---
 
+**Me** (2026-02-11 17:27:39):
+I notived a very high consumption of token. I just started a session with claude and I am already at 16%. was it knip-run that consumed so many tokens?
+
+---
+
+**Claude** (2026-02-11 17:28:25):
+The session's high token cost stemmed from 21 image reads of 7 screenshots, repeated file reads, and large context for two review subagents. To reduce costs, consider skipping review-ux for minor changes, limiting screenshot reviews, or splitting implementation and review into separate sessions.
+
+---
+
+**Me** (2026-02-11 17:30:29):
+I've removed the ability to automatically run the review-ux skill. How can I prevent claude to read the png but I want to make sure it can read them with the review-ux skill
+
+---
+
+**Claude** (2026-02-11 17:30:58):
+Add a convention to CLAUDE.md for the review-ux skill. Explicit instructions to read screenshots override the general rule.
+
+---
+
