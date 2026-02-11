@@ -17,6 +17,7 @@ See `product/PRODUCT.md` for the full product description.
 ## Conventions
 
 - No time estimates in any documents. Focus on what needs doing, not how long it takes.
+- After completing any UI-facing implementation, always run the `review-ux` skill before reporting done.
 
 ## Key Context
 

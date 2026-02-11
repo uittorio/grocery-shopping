@@ -254,6 +254,10 @@ main {
   margin-top: 0.25rem;
 }
 
+.servings-field {
+  max-width: 150px;
+}
+
 .ingredients-section {
   border: 1px solid #ecf0f1;
   border-radius: 4px;
@@ -403,7 +407,7 @@ main {
   }
 
   .ingredient-row {
-    flex-direction: column;
+    flex-wrap: wrap;
     border: 1px solid #ecf0f1;
     border-radius: 4px;
     padding: 0.75rem;
@@ -411,6 +415,11 @@ main {
   }
 
   .ingredient-row .form-field:first-child {
+    flex: 1 1 100%;
+  }
+
+  .ingredient-row .form-field:nth-child(2),
+  .ingredient-row .form-field:nth-child(3) {
     flex: 1;
   }
 
@@ -434,6 +443,14 @@ main {
 
   .form-actions {
     flex-direction: column;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    padding: 1rem 0;
+    margin: 0 -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .form-actions button,
@@ -452,6 +469,7 @@ main {
   }
 
   .remove-ingredient {
-    width: 100%;
+    flex: 0 0 auto;
+    align-self: flex-end;
   }
 }

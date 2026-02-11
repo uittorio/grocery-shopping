@@ -1,6 +1,7 @@
 {
   "id": "e2e-carbonara-001",
   "name": "Spaghetti Carbonara",
+  "servings": 4,
   "ingredients": [
     { "name": "spaghetti", "quantity": 400, "unit": "g" },
     { "name": "eggs", "quantity": 4, "unit": "whole" },

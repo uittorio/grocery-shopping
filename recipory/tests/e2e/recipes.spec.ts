@@ -13,10 +13,10 @@ test.describe('Recipe Library', () => {
     await expect(page.getByText('Chicken Tikka Masala')).toBeVisible();
 
     const carbonaraCard = page.locator('.recipe-card', { hasText: 'Spaghetti Carbonara' });
-    await expect(carbonaraCard.getByText('3 ingredients')).toBeVisible();
+    await expect(carbonaraCard.getByText('Serves 4 · 3 ingredients')).toBeVisible();
 
     const tikkaCard = page.locator('.recipe-card', { hasText: 'Chicken Tikka Masala' });
-    await expect(tikkaCard.getByText('4 ingredients')).toBeVisible();
+    await expect(tikkaCard.getByText('Serves 4 · 4 ingredients')).toBeVisible();
 
     await page.screenshot({ path: 'screenshots/01-recipe-library.png', fullPage: true });
   });
@@ -30,6 +30,7 @@ test.describe('Recipe Library', () => {
     await page.screenshot({ path: 'screenshots/02-add-recipe-form.png', fullPage: true });
 
     await page.getByLabel('Recipe Name').fill('Pasta Pesto');
+    await page.getByLabel('Serves').fill('2');
     await page.getByLabel('Name', { exact: true }).fill('penne');
     await page.getByLabel('Quantity').fill('400');
     await page.getByLabel('Unit').fill('g');
@@ -100,7 +101,7 @@ test.describe('Recipe Library', () => {
 
     await expect(page.getByLabel('Name', { exact: true })).toHaveCount(1);
 
-    await page.getByRole('button', { name: 'Add Ingredient' }).click();
+    await page.getByRole('button', { name: '+ Add Ingredient' }).click();
     await expect(page.getByLabel('Name', { exact: true })).toHaveCount(2);
 
     await page.getByRole('button', { name: 'Remove' }).first().click();

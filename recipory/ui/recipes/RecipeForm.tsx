@@ -40,6 +40,9 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
   const isEditMode = !!initialRecipe;
 
   const [name, setName] = useState(initialRecipe?.name ?? '');
+  const [servings, setServings] = useState(
+    initialRecipe?.servings !== undefined ? String(initialRecipe.servings) : ''
+  );
   const [ingredients, setIngredients] = useState<IngredientFormRow[]>(
     initialRecipe ? toFormRows(initialRecipe) : [createEmptyIngredient()]
   );
@@ -96,6 +99,7 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
       const recipe: Recipe = {
         id: initialRecipe.id,
         name: name.trim(),
+        servings: Number(servings) || 0,
         ingredients: parsedIngredients,
         createdAt: initialRecipe.createdAt,
         updatedAt: now,
@@ -107,6 +111,7 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
       const recipe: Recipe = {
         id: generateRecipeId(),
         name: name.trim(),
+        servings: Number(servings) || 0,
         ingredients: parsedIngredients,
         createdAt: now,
         updatedAt: now,
@@ -176,6 +181,18 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
             {errors.name}
           </span>
         )}
+      </div>
+
+      <div className="form-field servings-field">
+        <label htmlFor="recipe-servings">Serves</label>
+        <input
+          id="recipe-servings"
+          type="number"
+          value={servings}
+          onChange={e => setServings(e.target.value)}
+          placeholder="e.g. 4"
+          min="1"
+        />
       </div>
 
       <fieldset className="ingredients-section">
@@ -258,7 +275,7 @@ export function RecipeForm({ initialRecipe }: RecipeFormProps) {
           onClick={handleAddIngredient}
           className="add-ingredient"
         >
-          Add Ingredient
+          + Add Ingredient
         </button>
       </fieldset>
 

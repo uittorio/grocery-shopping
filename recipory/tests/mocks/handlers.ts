@@ -5,6 +5,7 @@ const mockRecipes: Recipe[] = [
   {
     id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'Spaghetti Carbonara',
+    servings: 4,
     ingredients: [
       { name: 'spaghetti', quantity: 400, unit: 'g' },
       { name: 'eggs', quantity: 4, unit: 'whole' },

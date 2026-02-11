@@ -37,7 +37,7 @@ export function RecipeList({ recipes }: RecipeListProps) {
         >
           <h3>{recipe.name}</h3>
           <p className="ingredient-count">
-            {recipe.ingredients.length} ingredient{recipe.ingredients.length !== 1 ? 's' : ''}
+            {recipe.servings > 0 && <>Serves {recipe.servings} · </>}{recipe.ingredients.length} ingredient{recipe.ingredients.length !== 1 ? 's' : ''}
           </p>
         </Link>
       ))}

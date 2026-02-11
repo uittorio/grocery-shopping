@@ -27,7 +27,7 @@ describe('App', () => {
       renderApp();
 
       expect(await screen.findByText('Spaghetti Carbonara')).toBeInTheDocument();
-      expect(screen.getByText('3 ingredients')).toBeInTheDocument();
+      expect(screen.getByText('Serves 4 · 3 ingredients')).toBeInTheDocument();
     });
 
     it('shows an Add Recipe button', async () => {
@@ -81,6 +81,7 @@ describe('App', () => {
       renderApp('/recipes/new');
 
       await user.type(screen.getByLabelText('Recipe Name'), 'Pasta Pesto');
+      await user.type(screen.getByLabelText('Serves'), '2');
       await user.type(screen.getByLabelText('Name'), 'penne');
       await user.type(screen.getByLabelText('Quantity'), '400');
       await user.type(screen.getByLabelText('Unit'), 'g');
@@ -106,7 +107,7 @@ describe('App', () => {
 
       expect(screen.getAllByLabelText('Name')).toHaveLength(1);
 
-      await user.click(screen.getByRole('button', { name: 'Add Ingredient' }));
+      await user.click(screen.getByRole('button', { name: '+ Add Ingredient' }));
       expect(screen.getAllByLabelText('Name')).toHaveLength(2);
 
       const removeButtons = screen.getAllByRole('button', { name: 'Remove' });
@@ -137,6 +138,7 @@ describe('App', () => {
       await navigateToEditRecipe();
 
       expect(screen.getByLabelText('Recipe Name')).toHaveValue('Spaghetti Carbonara');
+      expect(screen.getByLabelText('Serves')).toHaveValue(4);
 
       const ingredientNames = screen.getAllByLabelText('Name');
       expect(ingredientNames[0]).toHaveValue('spaghetti');
