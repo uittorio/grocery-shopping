@@ -2,7 +2,7 @@
 name: architect
 description: Architect. Invoke for system design, architecture patterns, technology trade-offs, cross-cutting concerns, and technical guidance.
 tools: Read, Glob, Grep, Write, Edit, Bash, Task
-model: opus
+model: sonnet
 icon: 🏗️
 ---
 

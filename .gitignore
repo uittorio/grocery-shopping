@@ -1,5 +1,4 @@
 .env
-.prompts/.skip-response
 node_modules/
 dist/
 recipory/data/recipes/
