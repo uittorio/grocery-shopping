@@ -1326,3 +1326,32 @@ The repo is reasonably token-efficient. The main opportunity is to ensure `.prom
 
 ---
 
+**Me** (2026-02-15 14:53:07):
+List all the TODO in the todo file
+
+---
+
+**Claude** (2026-02-15 14:53:31):
+Here are all the TODOs from `TODO.md`:
+
+**Current issues:**
+1. Deploy to a server (now that there's a working app)
+2. Week start is not configurable
+3. Ability to move recipes between days (also to move leftovers)
+4. Test mocks are not great
+5. Review rest of the code
+6. **Bug:** Removing one recipe with the same ID removes them all
+7. **Bug:** Leftovers don't carry from Sunday to Monday
+
+**Future ideas:**
+1. Save weekly plan (with date, to view previous ones)
+2. Add icons for nutrients
+3. Summary if nutrition is balanced
+4. Recipe suggestions
+5. Add image to the recipe
+6. Tag days with custom tags (e.g., "work", "home", "school") to impact meals
+7. Add section for breakfast
+8. Add section for snacks...
+
+---
+
