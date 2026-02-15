@@ -1,5 +1,8 @@
 # Prompt history log — written by hooks, never needed in context
-.prompts/
+.prompts/*.md
+
+# Discovery artifacts — transient research documents
+discovery/mvp
 
 # Generated files
 recipory/screenshots/

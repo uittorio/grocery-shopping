@@ -1237,3 +1237,92 @@ lets now do ## Increment 5B: Weekly Meal Plan
 ask the mob to do ## Increment 5B: Weekly Meal Plan
 
 ---
+**Me** (2026-02-15 13:18:46):
+/token-audit 
+
+---
+
+**Claude** (2026-02-15 13:25:30):
+Now let me check the recipory directory for additional large files and count the recipory CLAUDE.md:
+
+---
+
+**Me** (2026-02-15 13:29:19):
+make the change to enusre prompts md are ignored and ignore discovery/mvp folder. we need discovery/reciproy folder for now
+
+---
+
+**Claude** (2026-02-15 13:32:19):
+# Token Audit Report
+
+## Context budget (loaded every session)
+
+| Source | Lines | Notes |
+|--------|-------|-------|
+| `CLAUDE.md` (root) | 32 | Project context |
+| `recipory/CLAUDE.md` | 190 | Project-specific context |
+| `node_modules/thread-stream/CLAUDE.md` | 53 | Dependencies context (may not always load) |
+| Agent definitions (6 files) | 203 | Always loaded as tool definitions |
+| Skill definitions (4 files) | 105 | Always loaded as tool definitions |
+| **Total** | **583** | |
+
+## Findings
+
+1. **`.prompts/history.md` is NOT ignored (1244 lines)**
+   - Problem: `.claudeignore` excludes `.prompts/` but only the directory, not the content
+   - Why it costs tokens: Every user prompt and AI response summary is logged here
+   - Suggested fix: Add `*.md` pattern to `.claudeignore`:
+     ```
+     .prompts/
+     .prompts/*.md
+     ```
+
+2. **`discovery/` directory is NOT ignored (1060 lines)**
+   - Problem: Discovery artifacts (DESIGN_SPEC.md, DELIVERY_PLAN.md, etc.) are in `.claudeignore` exceptions
+   - Why it costs tokens: Large design specs and architectural documents load into context when exploring discovery folder
+   - Suggested fix: Add to `.claudeignore`:
+     ```
+     .prompts/
+     .prompts/*.md
+     discovery/
+     ```
+
+3. **`recipory/ui/App.css` (475 lines) is a CSS file but large**
+   - Problem: CSS files can contain extensive styling that might be read for debugging
+   - Why it costs tokens: If Claude reads App.css for component analysis, 475 lines cost tokens
+   - Suggested fix: Consider if CSS can be split into smaller modules; currently acceptable at <300 line threshold
+
+4. **`delivery/mvp/spikes/tesco-integration/spike.js` (447 lines)**
+   - Problem: JavaScript spike file exceeds 300 line threshold
+   - Why it costs tokens: Spike files are technical exploration artifacts that may be read for implementation reference
+   - Suggested fix: This is acceptable (under 500 lines), but consider if complex spikes should be split
+
+5. **No MCP servers configured**
+   - Status: Good — no idle tool definitions loading
+
+## Quick Wins
+
+- **Add `.prompts/*.md` to `.claudeignore`** (most impactful)
+  - Saves ~1244 lines per session
+  - `.claudeignore` already has `.prompts/` — just add the glob pattern
+  
+- **Add `discovery/` to `.claudeignore`**
+  - Saves ~1060 lines per session
+  - Discovery artifacts are transient research documents
+
+- **Move history.md to `recipory/.prompts/`**
+  - If history logging is recipory-specific, relocate to subdirectory
+  - Makes exclusion more explicit
+
+## Qualitative Checks
+
+**CLAUDE.md content**: Well-structured and concise. The only content that could potentially be extracted into skills is the "Key Context" section with project constraints (Raspberry Pi target, Tesco a
+
+**Hooks**: Both hooks write to `.prompts/history.md` (already identified). The hooks themselves are small (42-71 lines) and don't contribute to context budget.
+
+## Summary
+
+The repo is reasonably token-efficient. The main opportunity is to ensure `.prompts/history.md` and `discovery/` are properly excluded from context. The .claudeignore file currently excludes `.prompts...
+
+---
+
